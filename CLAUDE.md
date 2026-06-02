@@ -193,9 +193,9 @@ Core tables: `calls`, `call_transcripts`, `call_analysis`, `call_tags`,
 | 1 | Scaffold app | ✅ Complete |
 | 2 | Supabase integration | ✅ Complete |
 | 3 | Database schema | ✅ Complete |
-| 4 | Call metadata parser | ⏳ Next |
-| 5 | n8n ingestion workflow spec | ⏳ Pending |
-| 6 | API routes for processing | ⏳ Pending |
+| 4 | Call metadata parser | ✅ Complete |
+| 5 | n8n ingestion workflow | ✅ Complete — ID: gm7c0Xsl7PcEjpxB (inactive, fill creds first) |
+| 6 | API routes for processing | ✅ Complete |
 | 7 | AI analysis service | ⏳ Pending |
 | 8 | Dashboard with real data | ⏳ Pending |
 | 9 | Call explorer | ⏳ Pending |
