@@ -20,31 +20,37 @@ export type Database = {
         Row: Record<string, unknown>;
         Insert: Record<string, unknown>;
         Update: Record<string, unknown>;
+        Relationships: [];
       };
       call_transcripts: {
         Row: Record<string, unknown>;
         Insert: Record<string, unknown>;
         Update: Record<string, unknown>;
+        Relationships: [];
       };
       call_analysis: {
         Row: Record<string, unknown>;
         Insert: Record<string, unknown>;
         Update: Record<string, unknown>;
+        Relationships: [];
       };
       agents: {
         Row: Record<string, unknown>;
         Insert: Record<string, unknown>;
         Update: Record<string, unknown>;
+        Relationships: [];
       };
       daily_recaps: {
         Row: Record<string, unknown>;
         Insert: Record<string, unknown>;
         Update: Record<string, unknown>;
+        Relationships: [];
       };
       processing_events: {
         Row: Record<string, unknown>;
         Insert: Record<string, unknown>;
         Update: Record<string, unknown>;
+        Relationships: [];
       };
     };
     Views: Record<string, never>;
