@@ -50,24 +50,36 @@ Next.js App (Vercel) → Dashboard for Karen & Garret
 
 ```
 src/
-├── app/                    # Next.js App Router pages
-│   ├── layout.tsx          # Root layout (sidebar + header)
-│   ├── dashboard/          # /dashboard — KPI cards + charts
-│   ├── calls/              # /calls — call explorer table
-│   │   └── [id]/           # /calls/[id] — call detail + transcript
-│   ├── trends/             # /trends — trend charts
-│   ├── recaps/             # /recaps — daily/weekly recap emails
-│   ├── audits/             # /audits — call quality audits (later phase)
-│   └── settings/           # /settings — admin settings
+├── app/
+│   ├── layout.tsx              # Root layout (sidebar + header)
+│   ├── dashboard/              # /dashboard — KPI cards + charts
+│   ├── calls/[id]/             # /calls/[id] — call detail + transcript
+│   ├── trends/, recaps/, audits/, settings/
+│   └── api/                    # n8n ingestion endpoints (Chunk 6) ✅
+│       ├── ingest/call/        # POST — upserts call record, runs buildCallRecord()
+│       ├── ingest/transcript/  # POST — upserts Deepgram transcript
+│       ├── ingest/analysis/    # POST — upserts Claude analysis, denorms to calls
+│       └── processing/event/   # POST — immutable pipeline event log
 ├── components/
-│   ├── layout/             # AppSidebar, Header
-│   ├── dashboard/          # KpiCard, CallVolumeChart, CategoryChart
-│   └── ui/                 # shadcn/ui components (auto-generated)
-├── lib/
-│   ├── utils.ts            # shadcn cn() utility
-│   ├── mock-data.ts        # Mock data for layout validation (Chunk 1 only)
-│   ├── supabase/           # Supabase client setup (Chunk 2)
-│   └── parsers/            # Voice for Pest filename/metadata parsers (Chunk 4)
+│   ├── layout/                 # AppSidebar, Header
+│   ├── dashboard/              # KpiCard, CallVolumeChart, CategoryChart
+│   └── ui/                     # shadcn/ui components (auto-generated)
+└── lib/
+    ├── utils.ts                # shadcn cn() utility
+    ├── mock-data.ts            # Mock data for layout validation (Chunk 1 only)
+    ├── supabase/
+    │   ├── client.ts           # Anon client (browser/server components)
+    │   ├── server.ts           # createServerClient() + createServiceClient()
+    │   └── types.ts            # DB type stubs (replace with generated types later)
+    ├── parsers/
+    │   ├── call-metadata.ts    # Portal data parsing: parseTermId, parseWavFilename,
+    │   │                       #   parseDuration, normalizePhoneNumber, inferDirection,
+    │   │                       #   buildCallRecord — 31 unit tests ✅
+    │   └── call-metadata.test.ts
+    └── api/
+        ├── ingest-auth.ts      # validateIngestAuth() — Bearer token check
+        └── schemas.ts          # Zod enums: processingStatus, sentiment, direction,
+                                #   VALID_CATEGORIES (14-item controlled list)
 ```
 
 ## Supabase Project
@@ -103,6 +115,7 @@ See `.env.local.example` for all required variables.
 npm run dev     # Start dev server at http://localhost:3000
 npm run build   # Production build
 npm run lint    # ESLint
+npm test        # Jest unit tests (31 tests in src/lib/parsers/)
 ```
 
 ## Voice for Pest Integration
@@ -121,34 +134,75 @@ Always store timestamps in UTC in the database; display in Central time.
 All portal scraping logic lives in n8n (HTTP Request nodes + Code node for HTML parsing).
 Reference implementation: `C:\Users\Admin\Automation\pfitzer-pest-control\pfitzer-pulse\portal_client.py`
 
-## Call Processing Pipeline (n8n)
+## Call Processing Pipeline (n8n) ✅
+
+Workflow **"Pfitzer Pulse - Nightly Call Ingestion"** — ID: `gm7c0Xsl7PcEjpxB`
+on `automation.joystoneenterprises.com`. Currently **inactive** — must fill credentials
+in `Code - Config` node before activating (see n8n Workflow Setup below).
+
+Fires at 5 AM UTC daily (= midnight CDT / 11 PM CST).
 
 ```
-Cron trigger (nightly)
-  → Login to atscall.me portal (session cookie)
-  → Fetch call list for target date (HTML scrape)
-  → For each call:
-      → Get pre-signed recording URL
-      → Download WAV to VPS /tmp
-      → (Optional) Convert with ffmpeg if needed
-      → Send to Deepgram for diarized transcription
-      → POST transcript to /api/ingest/transcript
-      → Send transcript + metadata to Claude for analysis
-      → POST analysis to /api/ingest/analysis
-      → Delete temp WAV file
-  → POST daily recap trigger to /api/ingest/recap
+Schedule Trigger (5 AM UTC)
+  → Code - Config (set targetDate = yesterday CT, credentials placeholders)
+  → HTTP - Portal Login (POST form, capture Set-Cookie, no redirect follow)
+  → Code - Extract Cookie (validate redirect to /portal/home, extract cookie)
+  → HTTP - Set Page Size (GET /pager/200)
+  → HTTP - Fetch Call List (GET /index/start_date:D/end_date:D)
+  → Code - Parse HTML (regex parse <tr data-orig-id> rows → array of call objects)
+  → Split In Batches (batchSize: 1)
+     ↓ (loop — one call at a time)
+  → HTTP - Register Call (POST /api/ingest/call → get call UUID)
+  → HTTP - Get Recording (GET /callhistory/recording/{orig}/{term})
+  → Code - Extract Recording (normalize response, extract status + signedUrl)
+  → IF - Has Recording (status === 'converted')
+      TRUE →
+        Execute Command - Transcribe
+          (curl pipe: curl -sL signedUrl | curl POST deepgram --data-binary @-)
+        Code - Parse Deepgram (build diarized text with [Speaker N]: labels)
+        HTTP - Save Transcript (POST /api/ingest/transcript)
+        Code - Build Prompt (Claude analysis prompt with metadata + transcript)
+        HTTP - Claude Analysis (POST https://api.anthropic.com/v1/messages)
+        Code - Parse Analysis (extract JSON from Claude response)
+        HTTP - Save Analysis (POST /api/ingest/analysis)
+      → back to Split In Batches
+      FALSE → back to Split In Batches (no recording, skip)
 ```
 
-## API Routes (Chunks 6+)
+**Note:** WAV files are never saved to disk. The curl pipe streams directly
+from the portal signed URL to Deepgram's API.
 
-All routes are POST-only, server-side only, protected by `Authorization: Bearer <INGEST_SECRET>`.
+## n8n Workflow Setup
 
-| Route | Purpose |
-|-------|---------|
-| `POST /api/ingest/call` | Create/update call record from n8n |
-| `POST /api/ingest/transcript` | Store diarized transcript |
-| `POST /api/ingest/analysis` | Store Claude AI analysis results |
-| `POST /api/processing/event` | Log processing status events |
+Before activating the workflow, open `Code - Config` node and replace all
+`REPLACE_WITH_*` placeholders:
+
+| Field | Value |
+|-------|-------|
+| `nextjsBase` | Vercel deployment URL (e.g. `https://pfitzer-pulse.vercel.app`) |
+| `portalUsername` | `299@pfitzerpestcontrol` (or current login) |
+| `portalPassword` | Voice for Pest portal password |
+| `deepgramKey` | From Deepgram dashboard |
+| `anthropicKey` | From Anthropic console |
+| `ingestSecret` | Must match `INGEST_SECRET` in `.env.local` and Vercel env |
+
+## API Routes ✅
+
+All routes are POST-only, server-side, protected by `Authorization: Bearer <INGEST_SECRET>`,
+validated with Zod v4 before any Supabase write.
+
+| Route | What it does |
+|-------|-------------|
+| `POST /api/ingest/call` | Upserts call record (conflict: `call_id_portal`); runs `buildCallRecord()` internally so parsing stays in canonical TypeScript |
+| `POST /api/ingest/transcript` | Upserts Deepgram transcript; advances call status → `transcribed` |
+| `POST /api/ingest/analysis` | Upserts Claude analysis; denormalizes `primary_category`, `sentiment`, flags back to `calls`; advances status → `complete` |
+| `POST /api/processing/event` | Inserts immutable pipeline event log entry |
+
+**Important Zod v4 note:** `z.record()` requires two arguments in Zod v4.
+Use `z.record(z.string(), z.unknown())`, not `z.record(z.unknown())`.
+
+**Important Supabase types note:** The `Database` type stubs in `src/lib/supabase/types.ts`
+require `Relationships: []` on each table entry for Supabase JS v2.106+ compatibility.
 
 ## Call Categories (Controlled List)
 
