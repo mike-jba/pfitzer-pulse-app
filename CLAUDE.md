@@ -70,6 +70,19 @@ src/
 │   └── parsers/            # Voice for Pest filename/metadata parsers (Chunk 4)
 ```
 
+## Supabase Project
+
+| | |
+|---|---|
+| **Project name** | pfitzer-pulse-app |
+| **Project ID** | `jdoatvotmsmhrmpitzon` |
+| **URL** | `https://jdoatvotmsmhrmpitzon.supabase.co` |
+| **Region** | us-east-2 (Ohio) |
+| **Dashboard** | https://supabase.com/dashboard/project/jdoatvotmsmhrmpitzon |
+
+Note: The old `pfitzer-pulse` project (ID: `siuythdokmgsmbjnbhwo`) still exists and the legacy
+Python pipeline writes to it nightly. Do not modify that project. The new app uses this one only.
+
 ## Environment Variables
 
 See `.env.local.example` for all required variables.
@@ -178,9 +191,9 @@ Core tables: `calls`, `call_transcripts`, `call_analysis`, `call_tags`,
 | Chunk | Description | Status |
 |-------|-------------|--------|
 | 1 | Scaffold app | ✅ Complete |
-| 2 | Supabase integration | ⏳ Pending |
-| 3 | Database schema | ⏳ Pending |
-| 4 | Call metadata parser | ⏳ Pending |
+| 2 | Supabase integration | ✅ Complete |
+| 3 | Database schema | ✅ Complete |
+| 4 | Call metadata parser | ⏳ Next |
 | 5 | n8n ingestion workflow spec | ⏳ Pending |
 | 6 | API routes for processing | ⏳ Pending |
 | 7 | AI analysis service | ⏳ Pending |
