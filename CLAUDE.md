@@ -199,6 +199,44 @@ const targetDate = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Chicago
 **Security note:** Exported workflow JSON contains all credentials in plaintext.
 Do not commit or share exported workflow files.
 
+## Daily Recap Generator Workflow ✅
+
+Workflow **"Pfitzer Pulse - Daily Recap Generator"** — ID: `n5bZW9UQico9plTS`
+on `automation.joystoneenterprises.com`. **Tested on real data (June 1 2026).**
+Inactive — needs today's date fix + Gmail credential assigned before activating.
+
+Fires at 8 PM CT daily (`0 20 * * *`), 2 hours after ingestion.
+
+```
+Schedule Trigger (8 PM CT)
+  → Code - Config (targetDate = today CT, credentials, recipient emails)
+  → HTTP - Query Supabase (GET /rest/v1/calls with call_analysis(tags) embed)
+  → Code - Aggregate Stats (handles split items: $input.all().map(i => i.json))
+  → Code - Build Prompt (Claude haiku prompt + JSON body)
+  → HTTP - Claude Summary (POST api.anthropic.com/v1/messages)
+  → Code - Parse Summary (extract text, build HTML + plain-text email)
+  → HTTP - Save Recap (POST /api/ingest/recap)
+  → Gmail - Send Recap (Google Workspace OAuth2 credential)
+```
+
+**Key implementation notes:**
+- Supabase HTTP response arrives as split n8n items (one per call), not a single array.
+  Aggregate node handles both: `Array.isArray(first) ? first : $input.all().map(i => i.json)`
+- Nullable aggregate fields (`avg_duration_seconds`, `summary_text`, etc.) must be
+  `.nullable().optional()` in Zod — they can be null on days with zero/no-duration calls
+- Gmail node uses existing Google Workspace OAuth2 credential (same as other workflows)
+- Claude model: `claude-haiku-4-5-20251001` (cheap, fast — summary only)
+
+| Field | Status |
+|-------|--------|
+| `supabaseServiceKey` | Filled ✅ |
+| `anthropicKey` | Filled ✅ |
+| `ingestSecret` | Filled ✅ |
+| `recipientEmail` | Filled ✅ |
+| `fromEmail` | Filled ✅ |
+| Gmail credential | Assign in n8n UI ⚠️ |
+| `targetDate` | Update to today's date ⚠️ |
+
 ## API Routes ✅
 
 All routes are POST-only, server-side, protected by `Authorization: Bearer <INGEST_SECRET>`,
@@ -210,6 +248,7 @@ validated with Zod v4 before any Supabase write.
 | `POST /api/ingest/transcript` | Upserts Deepgram transcript; advances call status → `transcribed` |
 | `POST /api/ingest/analysis` | Upserts Claude analysis; denormalizes `primary_category`, `sentiment`, flags back to `calls`; advances status → `complete` |
 | `POST /api/processing/event` | Inserts immutable pipeline event log entry |
+| `POST /api/ingest/recap` | Upserts daily recap (conflict: `recap_date`); accepts aggregated stats + Claude summary + HTML email body |
 
 **Important Zod v4 notes:**
 - `z.record()` requires two arguments: `z.record(z.string(), z.unknown())`
@@ -268,7 +307,7 @@ Core tables: `calls`, `call_transcripts`, `call_analysis`, `call_tags`,
 | 8 | Dashboard with real data | ✅ Complete — KPI cards, charts, recent calls wired to Supabase |
 | 9 | Call explorer | ✅ Complete — TanStack Table, filters, sorting, pagination |
 | 10 | Call detail page | ✅ Complete — metadata, AI analysis, transcript viewer, event log |
-| 11 | Daily recap emails | ⏳ Pending |
+| 11 | Daily recap emails | ✅ Complete — /recaps page, POST /api/ingest/recap, n8n recap workflow |
 | 12 | Call quality audits (Voxa CSR scoring) | ⏳ Pending |
 
 ## Call Analysis Architecture (Two-Tier)
