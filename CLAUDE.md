@@ -268,7 +268,7 @@ Core tables: `calls`, `call_transcripts`, `call_analysis`, `call_tags`,
 | 7 | AI analysis (Claude via n8n) | ✅ Complete — ~$0.009/call, 2/10s batching |
 | 8 | Dashboard with real data | ✅ Complete — KPI cards, charts, recent calls wired to Supabase |
 | 9 | Call explorer | ✅ Complete — TanStack Table, filters, sorting, pagination |
-| 10 | Call detail page | ⏳ Next |
+| 10 | Call detail page | ✅ Complete — metadata, AI analysis, transcript viewer, event log |
 | 11 | Daily recap emails | ⏳ Pending |
 | 12 | Call quality audits (Voxa CSR scoring) | ⏳ Pending |
 
