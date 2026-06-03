@@ -19,8 +19,8 @@
 - [ ] **DASH-03**: Recent Calls rows are clickable and navigate to the call detail page
 - [ ] **DASH-04**: Recent Calls layout is tightened — wasted whitespace removed
 - [ ] **DASH-05**: Agent and Category fields display correctly in Recent Calls for all fully-processed calls
-- [ ] **DASH-06**: Calls shorter than ~25 seconds are excluded from all dashboard views globally
-- [ ] **DASH-07**: Calls with Release Cause = "No Digit" are excluded from all views globally
+- [x] **DASH-06**: Calls shorter than ~25 seconds are excluded from all dashboard views globally
+- [x] **DASH-07**: Calls with Release Cause = "No Digit" are excluded from all views globally
 
 ### TRENDS — Trends Tab
 
@@ -46,12 +46,12 @@
 
 ### DATA — Call Explorer & Pipeline
 
-- [ ] **DATA-01**: Root cause of Call Explorer showing no data is identified and fixed
+- [x] **DATA-01**: Root cause of Call Explorer showing no data is identified and fixed
 
 ### SEC — Security Hardening
 
-- [ ] **SEC-01**: `/api/audit/run` and `/api/audit/call-count` are protected with `INGEST_SECRET` bearer token check
-- [ ] **SEC-02**: n8n credential exposure risk (credentials in plaintext workflow JSON/execution logs) is assessed and mitigated or formally documented
+- [x] **SEC-01**: `/api/audit/run` and `/api/audit/call-count` are protected with `INGEST_SECRET` bearer token check
+- [x] **SEC-02**: n8n credential exposure risk (credentials in plaintext workflow JSON/execution logs) is assessed and mitigated or formally documented
 
 ---
 
@@ -87,11 +87,11 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| DATA-01 | Phase 1 | Pending |
-| SEC-01 | Phase 1 | Pending |
-| SEC-02 | Phase 1 | Pending |
-| DASH-06 | Phase 1 | Pending |
-| DASH-07 | Phase 1 | Pending |
+| DATA-01 | Phase 1 | ✓ Complete |
+| SEC-01 | Phase 1 | ✓ Complete |
+| SEC-02 | Phase 1 | ✓ Complete |
+| DASH-06 | Phase 1 | ✓ Complete |
+| DASH-07 | Phase 1 | ✓ Complete |
 | BRAND-01 | Phase 2 | Pending |
 | BRAND-02 | Phase 2 | Pending |
 | BRAND-03 | Phase 2 | Pending |
@@ -118,4 +118,4 @@
 
 ---
 *Requirements defined: 2026-06-03*
-*Last updated: 2026-06-03 — roadmap created, all 22 requirements mapped to 5 phases*
+*Last updated: 2026-06-03 — Phase 1 complete; 5/22 requirements marked Complete*

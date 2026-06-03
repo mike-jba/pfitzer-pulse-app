@@ -24,12 +24,12 @@ Milestone v2 "Polish & Complete" takes the working v1 MVP and makes it productio
 4. `/api/audit/run` and `/api/audit/call-count` reject unauthenticated requests with a 401 response
 5. n8n credential exposure risk is assessed and either mitigated or formally documented with an accepted-risk note
 
-**Plans**: 3 plans (2 waves)
+**Plans**: 3 plans (2 waves) — ✓ Complete 2026-06-03
 
 Plans:
-- [ ] 01-01-PLAN.md — Diagnose and fix DATA-01 Call Explorer blank state (wave 1)
-- [ ] 01-02-PLAN.md — Audit route lockdown via server actions (SEC-01) + n8n credential risk note (SEC-02) (wave 1)
-- [ ] 01-03-PLAN.md — Global short-call and "No Digit" exclusion filters (DASH-06, DASH-07) (wave 2)
+- [x] 01-01-PLAN.md — Diagnose and fix DATA-01 Call Explorer blank state (wave 1)
+- [x] 01-02-PLAN.md — Audit route lockdown via server actions (SEC-01) + n8n credential risk note (SEC-02) (wave 1)
+- [x] 01-03-PLAN.md — Global short-call and "No Digit" exclusion filters (DASH-06, DASH-07) (wave 2)
 
 ---
 
@@ -120,7 +120,7 @@ Plans:
 
 | Phase | Requirements | Plans Complete | Status | Completed |
 |-------|-------------|----------------|--------|-----------|
-| 1. Foundation & Security | DATA-01, SEC-01, SEC-02, DASH-06, DASH-07 | 0/3 | Planned | - |
+| 1. Foundation & Security | DATA-01, SEC-01, SEC-02, DASH-06, DASH-07 | 3/3 | ✓ Complete | 2026-06-03 |
 | 2. Brand System | BRAND-01, BRAND-02, BRAND-03 | 0/2 | Not started | - |
 | 3. Dashboard & Recaps Polish | DASH-01–05, RECAP-01, RECAP-02 | 0/3 | Not started | - |
 | 4. Trends Tab | TRENDS-01–04 | 0/2 | Not started | - |
