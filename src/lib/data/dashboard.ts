@@ -1,5 +1,6 @@
 import "server-only";
-import { createServerClient } from "@/lib/supabase/server";
+import { unstable_noStore as noStore } from "next/cache";
+import { createServiceClient } from "@/lib/supabase/server";
 
 // Returns a date string "YYYY-MM-DD" in America/Chicago timezone, offset by N days.
 function ctDate(offsetDays = 0): string {
@@ -51,7 +52,8 @@ export type DashboardData = {
 };
 
 export async function getDashboardData(): Promise<DashboardData> {
-  const supabase = await createServerClient();
+  noStore();
+  const supabase = createServiceClient();
 
   const yesterday = ctDate(-1);
   const weekStart = ctDate(-6); // last 7 days including today
