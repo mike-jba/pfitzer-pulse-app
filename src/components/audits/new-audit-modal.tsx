@@ -10,7 +10,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { createClient } from '@/lib/supabase/client'
 
 type Agent = { id: string; display_name: string }
 
@@ -39,16 +38,14 @@ export function NewAuditModal({ agents, lockedCallId, lockedAgentId, trigger }: 
     if (!agentId || !startDate || !endDate) { setCallCount(null); return }
 
     const displayName = agents.find(a => a.id === agentId)?.display_name ?? ''
-    const supabase = createClient()
-    const { count } = await supabase
-      .from('calls')
-      .select('id', { count: 'exact', head: true })
-      .ilike('agent_name_inferred', `${displayName}%`)
-      .eq('processing_status', 'complete')
-      .gte('call_date', startDate)
-      .lte('call_date', endDate)
-
-    setCallCount(Math.min(count ?? 0, 25))
+    const params = new URLSearchParams({
+      agent_name: displayName,
+      start_date: startDate,
+      end_date: endDate,
+    })
+    const res = await fetch(`/api/audit/call-count?${params}`)
+    const json = await res.json() as { count: number }
+    setCallCount(json.count)
   }, [agentId, startDate, endDate, isLocked, agents])
 
   useEffect(() => {
