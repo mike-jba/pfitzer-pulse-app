@@ -308,7 +308,7 @@ Core tables: `calls`, `call_transcripts`, `call_analysis`, `call_tags`,
 | 9 | Call explorer | ✅ Complete — TanStack Table, filters, sorting, pagination |
 | 10 | Call detail page | ✅ Complete — metadata, AI analysis, transcript viewer, event log |
 | 11 | Daily recap emails | ✅ Complete — /recaps page, POST /api/ingest/recap, n8n recap workflow |
-| 12 | Call quality audits (Voxa CSR scoring) | ⏳ Pending |
+| 12 | Call quality audits (Voxa CSR scoring) | ✅ Complete — /audits, /audits/[id], POST /api/audit/run, GET /api/audit/call-count, Voxa 30-criterion scoring via Claude Haiku |
 
 ## Call Analysis Architecture (Two-Tier)
 
