@@ -51,6 +51,15 @@ export async function POST(request: Request) {
   const supabase = createServiceClient()
   const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
 
+  // Look up agent display_name early — used for name-based call matching
+  // (calls.agent_id is not populated by the pipeline; calls are matched via agent_name_inferred)
+  const { data: agentLookup } = await supabase
+    .from('agents')
+    .select('display_name')
+    .eq('id', agent_id)
+    .single()
+  const agentDisplayName = (agentLookup as { display_name: string } | null)?.display_name ?? ''
+
   // 1. Ensure Voxa rubric exists in DB (lazy seed)
   let rubric_id: string
   const { data: existing, error: rubricReadError } = await supabase
@@ -95,14 +104,13 @@ export async function POST(request: Request) {
       .from('calls')
       .select('id')
       .in('id', call_ids)
-      .eq('agent_id', agent_id)
       .eq('processing_status', 'complete')
     resolvedCallIds = (ownedCalls ?? []).map((c: Record<string, unknown>) => c.id as string)
   } else if (date_range) {
     const { data: calls, error } = await supabase
       .from('calls')
       .select('id')
-      .eq('agent_id', agent_id)
+      .ilike('agent_name_inferred', `${agentDisplayName}%`)
       .eq('processing_status', 'complete')
       .gte('call_date', date_range.start)
       .lte('call_date', date_range.end)
@@ -199,12 +207,7 @@ export async function POST(request: Request) {
     const aggregate = aggregateScores(callScores)
 
     // 7. Synthesis
-    const { data: agentRow } = await supabase
-      .from('agents')
-      .select('display_name')
-      .eq('id', agent_id)
-      .single()
-    const agent_name = (agentRow as { display_name: string } | null)?.display_name ?? 'Agent'
+    const agent_name = agentDisplayName || 'Agent'
 
     const dateRangeStr = date_range
       ? `${date_range.start} to ${date_range.end}`

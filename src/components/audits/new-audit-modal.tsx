@@ -38,17 +38,18 @@ export function NewAuditModal({ agents, lockedCallId, lockedAgentId, trigger }: 
     if (isLocked) { setCallCount(1); return }
     if (!agentId || !startDate || !endDate) { setCallCount(null); return }
 
+    const displayName = agents.find(a => a.id === agentId)?.display_name ?? ''
     const supabase = createClient()
     const { count } = await supabase
       .from('calls')
       .select('id', { count: 'exact', head: true })
-      .eq('agent_id', agentId)
+      .ilike('agent_name_inferred', `${displayName}%`)
       .eq('processing_status', 'complete')
       .gte('call_date', startDate)
       .lte('call_date', endDate)
 
     setCallCount(Math.min(count ?? 0, 25))
-  }, [agentId, startDate, endDate, isLocked])
+  }, [agentId, startDate, endDate, isLocked, agents])
 
   useEffect(() => {
     fetchCallCount()
