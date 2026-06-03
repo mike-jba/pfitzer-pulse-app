@@ -137,54 +137,68 @@ Reference implementation: `C:\Users\Admin\Automation\pfitzer-pest-control\pfitze
 ## Call Processing Pipeline (n8n) ✅
 
 Workflow **"Pfitzer Pulse - Nightly Call Ingestion"** — ID: `gm7c0Xsl7PcEjpxB`
-on `automation.joystoneenterprises.com`. Currently **inactive** — must fill credentials
-in `Code - Config` node before activating (see n8n Workflow Setup below).
+on `automation.joystoneenterprises.com`. **Tested on real data (33 calls processed,
+June 1 2026).** Inactive — needs Code - Config date reverted to dynamic before activating.
 
-Fires at 5 AM UTC daily (= midnight CDT / 11 PM CST).
+Fires at 6 PM CT daily (`0 18 * * *`).
 
 ```
-Schedule Trigger (5 AM UTC)
-  → Code - Config (set targetDate = yesterday CT, credentials placeholders)
-  → HTTP - Portal Login (POST form, capture Set-Cookie, no redirect follow)
-  → Code - Extract Cookie (validate redirect to /portal/home, extract cookie)
+Schedule Trigger (6 PM CT)
+  → Code - Config (targetDate = yesterday CT, credentials)
+  → HTTP - Load Login Page (GET /portal/login — primes CakePHP session cookie)
+  → HTTP - Portal Login (POST form, neverError, no redirect follow)
+  → Code - Extract Cookie (merge GET+POST cookies, validate /portal/home redirect)
   → HTTP - Set Page Size (GET /pager/200)
   → HTTP - Fetch Call List (GET /index/start_date:D/end_date:D)
-  → Code - Parse HTML (regex parse <tr data-orig-id> rows → array of call objects)
-  → Split In Batches (batchSize: 1)
-     ↓ (loop — one call at a time)
+  → Code - Parse HTML (regex parse <tr data-orig-id> rows → parallel items)
+  [all calls fan out in parallel — no Split In Batches]
   → HTTP - Register Call (POST /api/ingest/call → get call UUID)
-  → HTTP - Get Recording (GET /callhistory/recording/{orig}/{term})
+  → HTTP - Get Recording (GET /callhistory/recording/{orig}/{term}, Response: JSON)
   → Code - Extract Recording (normalize response, extract status + signedUrl)
   → IF - Has Recording (status === 'converted')
       TRUE →
-        Execute Command - Transcribe
-          (curl pipe: curl -sL signedUrl | curl POST deepgram --data-binary @-)
-        Code - Parse Deepgram (build diarized text with [Speaker N]: labels)
+        HTTP - Download Audio (GET signedUrl → binary field 'audioFile')
+        HTTP - Send to Deepgram (POST binary, Content-Type: audio/wav, Response: JSON)
+          [Batching: 2 per batch / 10,000ms]
+        Code - Parse Deepgram (build diarized [Speaker N]: text from words[].speaker)
         HTTP - Save Transcript (POST /api/ingest/transcript)
         Code - Build Prompt (Claude analysis prompt with metadata + transcript)
-        HTTP - Claude Analysis (POST https://api.anthropic.com/v1/messages)
-        Code - Parse Analysis (extract JSON from Claude response)
+        HTTP - Claude Analysis (POST api.anthropic.com/v1/messages, timeout: 120s)
+          [Batching: 2 per batch / 10,000ms — prevents Anthropic 429 rate limit]
+        Code - Parse Analysis (extract JSON from Claude response, calc cost_usd)
         HTTP - Save Analysis (POST /api/ingest/analysis)
-      → back to Split In Batches
-      FALSE → back to Split In Batches (no recording, skip)
+      FALSE → (skip — no recording)
 ```
 
-**Note:** WAV files are never saved to disk. The curl pipe streams directly
-from the portal signed URL to Deepgram's API.
+**Key implementation notes:**
+- WAV files never saved to disk — signed URL downloaded directly into n8n binary field
+- n8n 2.23.2 task runner sandbox blocks fetch/$helpers/require in Code nodes — use HTTP Request nodes for all HTTP calls
+- HTTP - Get Recording must have Response Format = JSON (portal omits Content-Type header)
+- All Code nodes: "Run Once for Each Item" mode, return `{ json: {...} }` (no array wrapper)
+- Batching on Claude Analysis required — 5/2s fails, 2/10s reliable
 
 ## n8n Workflow Setup
 
-Before activating the workflow, open `Code - Config` node and replace all
-`REPLACE_WITH_*` placeholders:
+Credentials are already filled in `Code - Config`. Before activating, revert
+the hardcoded test date to dynamic:
 
-| Field | Value |
-|-------|-------|
-| `nextjsBase` | Vercel deployment URL (e.g. `https://pfitzer-pulse.vercel.app`) |
-| `portalUsername` | `299@pfitzerpestcontrol` (or current login) |
-| `portalPassword` | Voice for Pest portal password |
-| `deepgramKey` | From Deepgram dashboard |
-| `anthropicKey` | From Anthropic console |
-| `ingestSecret` | Must match `INGEST_SECRET` in `.env.local` and Vercel env |
+```javascript
+const yesterday = new Date();
+yesterday.setDate(yesterday.getDate() - 1);
+const targetDate = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Chicago' }).format(yesterday);
+```
+
+| Field | Status |
+|-------|--------|
+| `nextjsBase` | `https://pfitzer-pulse-app.vercel.app` ✅ |
+| `portalUsername` | `299@pfitzerpestcontrol` ✅ |
+| `portalPassword` | Filled ✅ |
+| `deepgramKey` | Filled ✅ |
+| `anthropicKey` | Filled ✅ |
+| `ingestSecret` | Matches Vercel env ✅ |
+
+**Security note:** Exported workflow JSON contains all credentials in plaintext.
+Do not commit or share exported workflow files.
 
 ## API Routes ✅
 
@@ -198,8 +212,9 @@ validated with Zod v4 before any Supabase write.
 | `POST /api/ingest/analysis` | Upserts Claude analysis; denormalizes `primary_category`, `sentiment`, flags back to `calls`; advances status → `complete` |
 | `POST /api/processing/event` | Inserts immutable pipeline event log entry |
 
-**Important Zod v4 note:** `z.record()` requires two arguments in Zod v4.
-Use `z.record(z.string(), z.unknown())`, not `z.record(z.unknown())`.
+**Important Zod v4 notes:**
+- `z.record()` requires two arguments: `z.record(z.string(), z.unknown())`
+- Nullable fields must use `z.string().nullable().optional()` — Claude returns `null` for fields it cannot infer (e.g. `customer_name_inferred`). `z.string().optional()` rejects null.
 
 **Important Supabase types note:** The `Database` type stubs in `src/lib/supabase/types.ts`
 require `Relationships: []` on each table entry for Supabase JS v2.106+ compatibility.
@@ -248,10 +263,10 @@ Core tables: `calls`, `call_transcripts`, `call_analysis`, `call_tags`,
 | 2 | Supabase integration | ✅ Complete |
 | 3 | Database schema | ✅ Complete |
 | 4 | Call metadata parser | ✅ Complete |
-| 5 | n8n ingestion workflow | ✅ Complete — ID: gm7c0Xsl7PcEjpxB (inactive, fill creds first) |
+| 5 | n8n ingestion workflow | ✅ Complete — ID: gm7c0Xsl7PcEjpxB — 33 calls processed in prod |
 | 6 | API routes for processing | ✅ Complete |
-| 7 | AI analysis service | ⏳ Pending |
-| 8 | Dashboard with real data | ⏳ Pending |
+| 7 | AI analysis (Claude via n8n) | ✅ Complete — ~$0.009/call, 2/10s batching |
+| 8 | Dashboard with real data | ⏳ Next |
 | 9 | Call explorer | ⏳ Pending |
 | 10 | Call detail page | ⏳ Pending |
 | 11 | Daily recap emails | ⏳ Pending |
