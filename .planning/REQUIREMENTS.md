@@ -87,35 +87,35 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| BRAND-01 | — | Pending |
-| BRAND-02 | — | Pending |
-| BRAND-03 | — | Pending |
-| DASH-01 | — | Pending |
-| DASH-02 | — | Pending |
-| DASH-03 | — | Pending |
-| DASH-04 | — | Pending |
-| DASH-05 | — | Pending |
-| DASH-06 | — | Pending |
-| DASH-07 | — | Pending |
-| TRENDS-01 | — | Pending |
-| TRENDS-02 | — | Pending |
-| TRENDS-03 | — | Pending |
-| TRENDS-04 | — | Pending |
-| RECAP-01 | — | Pending |
-| RECAP-02 | — | Pending |
-| AUDIT-01 | — | Pending |
-| AUDIT-02 | — | Pending |
-| SETTINGS-01 | — | Pending |
-| SETTINGS-02 | — | Pending |
-| DATA-01 | — | Pending |
-| SEC-01 | — | Pending |
-| SEC-02 | — | Pending |
+| DATA-01 | Phase 1 | Pending |
+| SEC-01 | Phase 1 | Pending |
+| SEC-02 | Phase 1 | Pending |
+| DASH-06 | Phase 1 | Pending |
+| DASH-07 | Phase 1 | Pending |
+| BRAND-01 | Phase 2 | Pending |
+| BRAND-02 | Phase 2 | Pending |
+| BRAND-03 | Phase 2 | Pending |
+| DASH-01 | Phase 3 | Pending |
+| DASH-02 | Phase 3 | Pending |
+| DASH-03 | Phase 3 | Pending |
+| DASH-04 | Phase 3 | Pending |
+| DASH-05 | Phase 3 | Pending |
+| RECAP-01 | Phase 3 | Pending |
+| RECAP-02 | Phase 3 | Pending |
+| TRENDS-01 | Phase 4 | Pending |
+| TRENDS-02 | Phase 4 | Pending |
+| TRENDS-03 | Phase 4 | Pending |
+| TRENDS-04 | Phase 4 | Pending |
+| AUDIT-01 | Phase 5 | Pending |
+| AUDIT-02 | Phase 5 | Pending |
+| SETTINGS-01 | Phase 5 | Pending |
+| SETTINGS-02 | Phase 5 | Pending |
 
 **Coverage:**
 - v2 requirements: 22 total
-- Mapped to phases: 0 (pending roadmap)
-- Unmapped: 22 ⚠️ (roadmapper will assign)
+- Mapped to phases: 22 (all mapped)
+- Unmapped: 0 ✓
 
 ---
 *Requirements defined: 2026-06-03*
-*Last updated: 2026-06-03 — initial v2 milestone definition*
+*Last updated: 2026-06-03 — roadmap created, all 22 requirements mapped to 5 phases*
