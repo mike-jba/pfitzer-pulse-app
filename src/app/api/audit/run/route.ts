@@ -53,12 +53,17 @@ export async function POST(request: Request) {
 
   // 1. Ensure Voxa rubric exists in DB (lazy seed)
   let rubric_id: string
-  const { data: existing } = await supabase
+  const { data: existing, error: rubricReadError } = await supabase
     .from('call_quality_rubrics')
     .select('id')
     .eq('name', VOXA_RUBRIC_NAME)
     .eq('active', true)
-    .single()
+    .maybeSingle()
+
+  if (rubricReadError) {
+    console.error('[audit/run] rubric read', rubricReadError)
+    return NextResponse.json({ ok: false, error: 'Failed to read rubric' }, { status: 500 })
+  }
 
   if (existing) {
     rubric_id = (existing as { id: string }).id
@@ -86,7 +91,13 @@ export async function POST(request: Request) {
   // 2. Resolve call list
   let resolvedCallIds: string[]
   if (call_ids && call_ids.length > 0) {
-    resolvedCallIds = call_ids
+    const { data: ownedCalls } = await supabase
+      .from('calls')
+      .select('id')
+      .in('id', call_ids)
+      .eq('agent_id', agent_id)
+      .eq('processing_status', 'complete')
+    resolvedCallIds = (ownedCalls ?? []).map((c: Record<string, unknown>) => c.id as string)
   } else if (date_range) {
     const { data: calls, error } = await supabase
       .from('calls')
@@ -236,7 +247,8 @@ export async function POST(request: Request) {
     )
 
     if (scoreRows.length > 0) {
-      await supabase.from('call_quality_scores').insert(scoreRows)
+      const { error: scoresError } = await supabase.from('call_quality_scores').insert(scoreRows)
+      if (scoresError) throw new Error(`Failed to insert scores: ${scoresError.message}`)
     }
 
     // 9. Update audit record to complete
