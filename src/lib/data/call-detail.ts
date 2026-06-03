@@ -50,6 +50,7 @@ export type CallDetailData = {
   to_extension: string | null;
   orig_id: string | null;
   call_id_portal: string | null;
+  agent_id: string | null;
   agent_name_inferred: string | null;
   duration_seconds: number | null;
   processing_status: string | null;
@@ -84,7 +85,7 @@ export async function getCallDetail(
       .select(
         `id, call_time_ct, call_date, direction, from_name, from_number,
          dialed_number, to_extension, orig_id, call_id_portal,
-         agent_name_inferred, duration_seconds, processing_status,
+         agent_id, agent_name_inferred, duration_seconds, processing_status,
          call_analysis (
            short_summary, detailed_summary, primary_category,
            secondary_categories, tags, pest_types, topics_discussed,
@@ -127,6 +128,7 @@ export async function getCallDetail(
     to_extension: r.to_extension as string | null,
     orig_id: r.orig_id as string | null,
     call_id_portal: r.call_id_portal as string | null,
+    agent_id: r.agent_id as string | null,
     agent_name_inferred: r.agent_name_inferred as string | null,
     duration_seconds: r.duration_seconds as number | null,
     processing_status: r.processing_status as string | null,

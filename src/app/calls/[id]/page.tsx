@@ -14,6 +14,8 @@ import {
   getCallDetail,
   parseTranscript,
 } from "@/lib/data/call-detail";
+import { getActiveAgents } from "@/lib/data/audits";
+import { AuditCallButton } from "@/components/audits/audit-call-button";
 
 // ── Formatters ──────────────────────────────────────────────────
 
@@ -140,7 +142,7 @@ export default async function CallDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const call = await getCallDetail(id);
+  const [call, agents] = await Promise.all([getCallDetail(id), getActiveAgents()]);
   if (!call) notFound();
 
   const transcriptLines = parseTranscript(call.transcript?.transcript_text ?? null);
@@ -211,6 +213,7 @@ export default async function CallDetailPage({
             color="bg-blue-100 text-blue-700"
             label="Booking Made"
           />
+          <AuditCallButton callId={call.id} agentId={call.agent_id} agents={agents} />
         </div>
       </div>
 
