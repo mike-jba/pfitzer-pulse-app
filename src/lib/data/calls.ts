@@ -1,6 +1,7 @@
 import "server-only";
 import { unstable_noStore as noStore } from "next/cache";
 import { createServiceClient } from "@/lib/supabase/server";
+import { MIN_CALL_DURATION_SECONDS } from "./constants";
 
 export type CallListRow = {
   id: string;
@@ -33,6 +34,7 @@ export async function getCalls(): Promise<CallListRow[]> {
        processing_status,
        call_analysis (short_summary)`
     )
+    .gt("duration_seconds", MIN_CALL_DURATION_SECONDS)
     .order("call_time_ct", { ascending: false });
 
   if (error) {
