@@ -138,8 +138,12 @@ export async function POST(request: Request) {
 
   // Filter to calls that have a non-empty transcript — skip voicemails / processing failures
   const scorableRecords = (callRecords as Record<string, unknown>[]).filter(r => {
-    const t = r.call_transcripts as { transcript_text: string | null }[] | null
-    return t?.[0]?.transcript_text?.trim()
+    const ct = r.call_transcripts
+    // Supabase may return array or object depending on FK detection
+    const text = Array.isArray(ct)
+      ? (ct[0] as { transcript_text: string | null } | undefined)?.transcript_text
+      : (ct as { transcript_text: string | null } | null)?.transcript_text
+    return text?.trim()
   })
 
   if (scorableRecords.length === 0) {
@@ -171,8 +175,10 @@ export async function POST(request: Request) {
   try {
     // 5. Score each call in parallel batches of 5
     async function scoreCall(record: Record<string, unknown>): Promise<ReturnType<typeof computeCallScore>> {
-      const transcriptArr = record.call_transcripts as { transcript_text: string | null }[] | null
-      const transcript = transcriptArr?.[0]?.transcript_text ?? ''
+      const ct = record.call_transcripts
+      const transcript = Array.isArray(ct)
+        ? (ct[0] as { transcript_text: string | null } | undefined)?.transcript_text ?? ''
+        : (ct as { transcript_text: string | null } | null)?.transcript_text ?? ''
 
       const prompt = buildScoringPrompt({
         transcript,
