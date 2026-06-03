@@ -61,10 +61,11 @@ export async function getAuditsList(): Promise<AuditListItem[]> {
   }
 
   return (data ?? []).map((row: Record<string, unknown>) => {
-    const agentArr = row.agents as { display_name: string }[] | null
+    const agents = row.agents as { display_name: string }[] | { display_name: string } | null
+    const agent_name = Array.isArray(agents) ? agents[0]?.display_name ?? null : agents?.display_name ?? null
     return {
       id: row.id as string,
-      agent_name: agentArr?.[0]?.display_name ?? null,
+      agent_name,
       date_range_start: row.date_range_start as string | null,
       date_range_end: row.date_range_end as string | null,
       status: row.status as string,
@@ -101,7 +102,8 @@ export async function getAuditDetail(id: string): Promise<AuditDetailData | null
   if (auditError || !auditData) return null
 
   const row = auditData as Record<string, unknown>
-  const agentArr = row.agents as { display_name: string }[] | null
+  const agentsField = row.agents as { display_name: string }[] | { display_name: string } | null
+  const agentArr = Array.isArray(agentsField) ? agentsField : agentsField ? [agentsField] : null
   const scoreRows = (scoresResult.data ?? []) as AuditScoreRow[]
 
   // Reconstruct section scores from score rows
