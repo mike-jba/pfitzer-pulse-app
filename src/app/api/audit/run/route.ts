@@ -2,7 +2,7 @@ import 'server-only'
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 import Anthropic from '@anthropic-ai/sdk'
-import { createServerClient, createServiceClient } from '@/lib/supabase/server'
+import { createServiceClient } from '@/lib/supabase/server'
 import { VOXA_CRITERIA, VOXA_RUBRIC_NAME } from '@/lib/voxa-rubric'
 import { buildScoringPrompt, buildSynthesisPrompt } from '@/lib/audit-prompt'
 import { computeCallScore, aggregateScores } from '@/lib/audit-scoring'
@@ -25,13 +25,6 @@ const CriterionResultSchema = z.object({
 })
 
 export async function POST(request: Request) {
-  // Auth: verify user session
-  const serverClient = await createServerClient()
-  const { data: { user } } = await serverClient.auth.getUser()
-  if (!user) {
-    return NextResponse.json({ ok: false, error: 'Unauthorized' }, { status: 401 })
-  }
-
   let body: unknown
   try {
     body = await request.json()
