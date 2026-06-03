@@ -112,10 +112,12 @@ export async function getCallDetail(
   if (callError || !callData) return null;
 
   const r = callData as Record<string, unknown>;
-  const analysisArr = r.call_analysis as Record<string, unknown>[] | null;
-  const transcriptArr = r.call_transcripts as Record<string, unknown>[] | null;
-  const a = analysisArr?.[0] ?? null;
-  const t = transcriptArr?.[0] ?? null;
+  // Supabase returns one-to-one FK joins as objects, not arrays.
+  // Guard against both shapes to stay resilient across Supabase JS versions.
+  const rawAnalysis = r.call_analysis as Record<string, unknown> | Record<string, unknown>[] | null;
+  const rawTranscript = r.call_transcripts as Record<string, unknown> | Record<string, unknown>[] | null;
+  const a = (Array.isArray(rawAnalysis) ? rawAnalysis[0] : rawAnalysis) ?? null;
+  const t = (Array.isArray(rawTranscript) ? rawTranscript[0] : rawTranscript) ?? null;
 
   return {
     id: r.id as string,

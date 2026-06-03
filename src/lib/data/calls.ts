@@ -42,7 +42,13 @@ export async function getCalls(): Promise<CallListRow[]> {
 
   return (data ?? []).map((row) => {
     const r = row as Record<string, unknown>;
-    const analysis = r.call_analysis as { short_summary: string | null }[] | null;
+    // Supabase returns one-to-one FK joins as an object, not an array.
+    // Guard against both shapes to stay resilient across Supabase JS versions.
+    const rawAnalysis = r.call_analysis as
+      | { short_summary: string | null }
+      | { short_summary: string | null }[]
+      | null;
+    const analysis = Array.isArray(rawAnalysis) ? rawAnalysis[0] : rawAnalysis;
     return {
       id: r.id as string,
       call_time_ct: r.call_time_ct as string | null,
@@ -58,7 +64,7 @@ export async function getCalls(): Promise<CallListRow[]> {
       complaint_flag: r.complaint_flag as boolean | null,
       sales_opportunity_flag: r.sales_opportunity_flag as boolean | null,
       processing_status: r.processing_status as string | null,
-      short_summary: analysis?.[0]?.short_summary ?? null,
+      short_summary: analysis?.short_summary ?? null,
     };
   });
 }
