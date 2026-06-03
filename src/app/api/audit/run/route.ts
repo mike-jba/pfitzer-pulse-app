@@ -136,6 +136,18 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: false, error: 'Failed to fetch calls' }, { status: 500 })
   }
 
+  // Filter to calls that have a non-empty transcript — skip voicemails / processing failures
+  const scorableRecords = (callRecords as Record<string, unknown>[]).filter(r => {
+    const t = r.call_transcripts as { transcript_text: string | null }[] | null
+    return t?.[0]?.transcript_text?.trim()
+  })
+
+  if (scorableRecords.length === 0) {
+    return NextResponse.json({ ok: false, error: 'No calls with transcripts found in this range' }, { status: 422 })
+  }
+
+  console.log(`[audit/run] ${resolvedCallIds.length} calls resolved, ${scorableRecords.length} have transcripts`)
+
   // 4. Create the audit record (status: running)
   const { data: audit, error: auditCreateError } = await supabase
     .from('call_quality_audits')
@@ -177,7 +189,10 @@ export async function POST(request: Request) {
 
       const raw = (message.content[0] as { type: string; text: string }).text
       const jsonMatch = raw.match(/\{[\s\S]*\}/)
-      if (!jsonMatch) throw new Error(`No JSON in Claude response for call ${record.id}`)
+      if (!jsonMatch) {
+        console.error(`[audit/run] No JSON for call ${record.id}. Raw response (first 500 chars):`, raw.slice(0, 500))
+        throw new Error(`No JSON in Claude response for call ${record.id}: ${raw.slice(0, 200)}`)
+      }
 
       const parsed = JSON.parse(jsonMatch[0]) as { criteria: unknown[] }
       const criteria: CriterionResult[] = parsed.criteria
@@ -190,8 +205,9 @@ export async function POST(request: Request) {
 
     const BATCH_SIZE = 5
     const callScores: ReturnType<typeof computeCallScore>[] = []
-    for (let i = 0; i < callRecords.length; i += BATCH_SIZE) {
-      const batch = callRecords.slice(i, i + BATCH_SIZE) as Record<string, unknown>[]
+    for (let i = 0; i < scorableRecords.length; i += BATCH_SIZE) {
+      const batch = scorableRecords.slice(i, i + BATCH_SIZE)
+      console.log(`[audit/run] scoring batch ${Math.floor(i / BATCH_SIZE) + 1}, calls ${i + 1}–${Math.min(i + BATCH_SIZE, scorableRecords.length)}`)
       const batchResults = await Promise.all(batch.map(r => scoreCall(r)))
       callScores.push(...batchResults)
     }
@@ -263,12 +279,12 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ ok: true, audit_id })
   } catch (err) {
-    console.error('[audit/run]', err)
-    // Update status to failed
+    const msg = err instanceof Error ? err.message : String(err)
+    console.error('[audit/run]', msg)
     await supabase
       .from('call_quality_audits')
       .update({ status: 'failed' })
       .eq('id', audit_id)
-    return NextResponse.json({ ok: false, error: 'Scoring failed' }, { status: 500 })
+    return NextResponse.json({ ok: false, error: msg }, { status: 500 })
   }
 }
