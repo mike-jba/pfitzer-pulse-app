@@ -1,6 +1,7 @@
 import "server-only";
 import { unstable_noStore as noStore } from "next/cache";
 import { createServiceClient } from "@/lib/supabase/server";
+import { MIN_CALL_DURATION_SECONDS } from "./constants";
 
 // Returns a date string "YYYY-MM-DD" in America/Chicago timezone, offset by N days.
 function ctDate(offsetDays = 0): string {
@@ -70,24 +71,28 @@ export async function getDashboardData(): Promise<DashboardData> {
     supabase
       .from("calls")
       .select("id", { count: "exact", head: true })
-      .eq("call_date", yesterday),
+      .eq("call_date", yesterday)
+      .gt("duration_seconds", MIN_CALL_DURATION_SECONDS),
 
     supabase
       .from("calls")
       .select("id", { count: "exact", head: true })
-      .gte("call_date", weekStart),
+      .gte("call_date", weekStart)
+      .gt("duration_seconds", MIN_CALL_DURATION_SECONDS),
 
     supabase
       .from("calls")
       .select(
         "direction, duration_seconds, primary_category, follow_up_required, complaint_flag, sales_opportunity_flag"
       )
-      .gte("call_date", monthStart),
+      .gte("call_date", monthStart)
+      .gt("duration_seconds", MIN_CALL_DURATION_SECONDS),
 
     supabase
       .from("calls")
       .select("call_date")
       .gte("call_date", volumeStart)
+      .gt("duration_seconds", MIN_CALL_DURATION_SECONDS)
       .order("call_date", { ascending: true }),
 
     supabase
@@ -95,6 +100,7 @@ export async function getDashboardData(): Promise<DashboardData> {
       .select(
         "id, call_time_ct, from_name, from_number, agent_name_inferred, duration_seconds, primary_category, sentiment, follow_up_required, complaint_flag, sales_opportunity_flag, direction"
       )
+      .gt("duration_seconds", MIN_CALL_DURATION_SECONDS)
       .order("call_time_ct", { ascending: false })
       .limit(20),
   ]);
