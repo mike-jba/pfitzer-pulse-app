@@ -28,8 +28,8 @@ const BodySchema = z.object({
   sales_opportunity_flag: z.boolean().optional(),
 
   // Speaker identification
-  customer_name_inferred: z.string().optional(),
-  agent_name_inferred: z.string().optional(),
+  customer_name_inferred: z.string().nullable().optional(),
+  agent_name_inferred: z.string().nullable().optional(),
 
   // Confidence
   confidence_score: z.number().min(0).max(1).optional(),
