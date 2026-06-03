@@ -20,6 +20,15 @@ const BodySchema = z.object({
   secondary_categories: z.array(z.string()).optional(),
   tags: z.array(z.string()).optional(),
   pest_types: z.array(z.string()).optional(),
+  topics_discussed: z.array(z.string()).optional(),
+
+  // Outcome
+  booking_made: z.boolean().optional(),
+  call_outcome: z.enum([
+    'booked', 'not_booked', 'rescheduled', 'question_answered',
+    'follow_up_scheduled', 'transferred', 'voicemail_left',
+    'complaint_logged', 'cancelled', 'other',
+  ]).optional(),
 
   // Signals
   sentiment: callSentimentSchema.optional(),
@@ -92,6 +101,7 @@ export async function POST(request: Request) {
       follow_up_required: analysisFields.follow_up_required ?? false,
       complaint_flag: analysisFields.complaint_flag ?? false,
       sales_opportunity_flag: analysisFields.sales_opportunity_flag ?? false,
+      booking_made: analysisFields.booking_made ?? false,
       agent_name_inferred: analysisFields.agent_name_inferred ?? null,
     })
     .eq('id', call_id)
