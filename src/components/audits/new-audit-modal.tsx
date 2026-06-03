@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { ClipboardCheck, Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -9,7 +9,6 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '@/components/ui/dialog'
 import { createClient } from '@/lib/supabase/client'
 
@@ -84,17 +83,21 @@ export function NewAuditModal({ agents, lockedCallId, lockedAgentId, trigger }: 
     }
   }
 
-  return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger>
-        {trigger ?? (
-          <Button size="sm">
-            <ClipboardCheck className="mr-2 h-4 w-4" />
-            New Audit
-          </Button>
-        )}
-      </DialogTrigger>
+  const triggerButton = trigger != null
+    ? React.cloneElement(trigger as React.ReactElement<{ onClick?: React.MouseEventHandler }>, {
+        onClick: () => setOpen(true),
+      })
+    : (
+      <Button size="sm" onClick={() => setOpen(true)}>
+        <ClipboardCheck className="mr-2 h-4 w-4" />
+        New Audit
+      </Button>
+    )
 
+  return (
+    <>
+      {triggerButton}
+      <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>
@@ -185,5 +188,6 @@ export function NewAuditModal({ agents, lockedCallId, lockedAgentId, trigger }: 
         </form>
       </DialogContent>
     </Dialog>
+    </>
   )
 }
