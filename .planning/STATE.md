@@ -10,13 +10,13 @@ See: .planning/PROJECT.md (updated 2026-06-03)
 ## Current Position
 
 Phase: 1 of 5 (Foundation & Security)
-Plan: 02 of 03 complete (in phase)
+Plan: 03 of 03 in phase (01-01 + 01-02 complete; 01-03 next)
 Status: In progress
-Last activity: 2026-06-03 — Completed 01-02-PLAN.md (SEC-01 + SEC-02 security fixes)
+Last activity: 2026-06-03 — Completed 01-01-PLAN.md (DATA-01 diagnosis and fix)
 
-Progress: [█░░░░░░░░░] ~9%
+Progress: [██░░░░░░░░] ~14%
 
-Phases: 0/5 complete | Plans: 2/22 complete (01-01 research + 01-02 execution)
+Phases: 0/5 complete | Plans: 3/22 complete (01-01 research + 01-02 security + 01-01 data fix)
 
 ## Performance Metrics
 
@@ -43,15 +43,16 @@ Phases: 0/5 complete | Plans: 2/22 complete (01-01 research + 01-02 execution)
 - TRENDS split into its own phase (Phase 4) — substantial build, 4 charts + filters
 - **SEC-01 (01-02):** Deleted `/api/audit/run` and `/api/audit/call-count` routes entirely (Option A) vs adding INGEST_SECRET auth — no external callers existed after modal was rewired to server actions
 - **SEC-02 (01-02):** n8n credential exposure risk accepted for v2; formal doc in docs/security-notes.md; revisit in v3
+- **DATA-01 (01-01):** Root cause = H2 (Supabase one-to-one FK joins return objects not arrays). 105 metadata_saved calls are intentional (no recording). Fix: Array.isArray() guard in getCalls() and getCallDetail()
 
 ### Active Concerns
 
-- DATA-01 is a blocker: Call Explorer shows no data (root cause unknown — pipeline vs query)
 - DB types are stubs (110+ cast sites) — not in v2 scope but raises refactor risk
 - Agent-to-call linkage is fuzzy AI name match — audit accuracy risk, not addressed in v2
 
 ### Resolved Concerns
 
+- ~~DATA-01: Call Explorer shows no data~~ — Resolved in 01-01: Supabase one-to-one FK joins return objects not arrays; getCalls() and getCallDetail() fixed with Array.isArray() guard
 - ~~`/api/audit/run` and `/api/audit/call-count` have no auth guards~~ — Resolved in 01-02: routes deleted, logic moved to server actions
 
 ### Pending Todos
@@ -60,6 +61,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-06-03T23:26:13Z
-Stopped at: Completed 01-02-PLAN.md. SEC-01 closed, SEC-02 documented. Ready for 01-03.
+Last session: 2026-06-03T23:26:53Z
+Stopped at: Completed 01-01-PLAN.md. DATA-01 diagnosed and fixed. Ready for 01-03.
 Resume file: None
