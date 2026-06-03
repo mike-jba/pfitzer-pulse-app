@@ -10,9 +10,13 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { mockCallVolume } from "@/lib/mock-data";
+import type { CallVolumeRow } from "@/lib/data/dashboard";
 
-export function CallVolumeChart() {
+interface CallVolumeChartProps {
+  data: CallVolumeRow[];
+}
+
+export function CallVolumeChart({ data }: CallVolumeChartProps) {
   return (
     <Card>
       <CardHeader>
@@ -22,7 +26,7 @@ export function CallVolumeChart() {
       </CardHeader>
       <CardContent>
         <ResponsiveContainer width="100%" height={220}>
-          <BarChart data={mockCallVolume} margin={{ top: 4, right: 4, left: -20, bottom: 0 }}>
+          <BarChart data={data} margin={{ top: 4, right: 4, left: -20, bottom: 0 }}>
             <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
             <XAxis
               dataKey="date"

@@ -10,10 +10,13 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { mockCategories } from "@/lib/mock-data";
+import type { CategoryRow } from "@/lib/data/dashboard";
 
-export function CategoryChart() {
-  const data = mockCategories.slice(0, 8);
+interface CategoryChartProps {
+  data: CategoryRow[];
+}
+
+export function CategoryChart({ data }: CategoryChartProps) {
 
   return (
     <Card>
