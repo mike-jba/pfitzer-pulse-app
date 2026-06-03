@@ -270,7 +270,22 @@ Core tables: `calls`, `call_transcripts`, `call_analysis`, `call_tags`,
 | 9 | Call explorer | ⏳ Pending |
 | 10 | Call detail page | ⏳ Pending |
 | 11 | Daily recap emails | ⏳ Pending |
-| 12 | Call quality audits | ⏳ Pending |
+| 12 | Call quality audits (Voxa CSR scoring) | ⏳ Pending |
+
+## Call Analysis Architecture (Two-Tier)
+
+**Tier 1 — Nightly, automatic (Chunk 7 ✅):** Runs on every call via n8n pipeline.
+Fast and cheap (~$0.009/call). Fields: category, summaries, sentiment, booking_made,
+call_outcome, topics_discussed, tags, pest_types, flags. Results → `call_analysis`.
+
+**Tier 2 — On-demand CSR audit (Chunk 12):** Karen or Garret selects calls for a
+specific agent. Triggers a separate Claude API call with the full Voxa 24-criteria
+prompt (see `docs/voxa-scoring-framework.md`). Scores all 24 E-Words criteria across
+6 sections (Enthusiasm, Engage, Empathy, Encourage, Educate, Extra Mile). Generates
+a performance report. Results → `call_quality_audits` + `call_quality_scores`.
+
+**Critical separation:** The Voxa framework and its 24 criteria belong ONLY in the
+Chunk 12 prompt. Do NOT include CSR performance scoring in the Tier 1 nightly prompt.
 
 ## Security Rules
 
