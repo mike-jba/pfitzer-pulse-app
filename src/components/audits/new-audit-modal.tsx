@@ -10,6 +10,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
+import { runAudit, getAuditCallCount } from '@/lib/actions/audit'
 
 type Agent = { id: string; display_name: string }
 
@@ -38,14 +39,12 @@ export function NewAuditModal({ agents, lockedCallId, lockedAgentId, trigger }: 
     if (!agentId || !startDate || !endDate) { setCallCount(null); return }
 
     const displayName = agents.find(a => a.id === agentId)?.display_name ?? ''
-    const params = new URLSearchParams({
+    const count = await getAuditCallCount({
       agent_name: displayName,
       start_date: startDate,
       end_date: endDate,
     })
-    const res = await fetch(`/api/audit/call-count?${params}`)
-    const json = await res.json() as { count: number }
-    setCallCount(json.count)
+    setCallCount(count)
   }, [agentId, startDate, endDate, isLocked, agents])
 
   useEffect(() => {
@@ -62,12 +61,7 @@ export function NewAuditModal({ agents, lockedCallId, lockedAgentId, trigger }: 
       : { agent_id: agentId, date_range: { start: startDate, end: endDate } }
 
     try {
-      const res = await fetch('/api/audit/run', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-      })
-      const json = await res.json() as { ok: boolean; audit_id?: string; error?: string }
+      const json = await runAudit(body)
       if (!json.ok) {
         setError(json.error ?? 'Audit failed')
         setLoading(false)
