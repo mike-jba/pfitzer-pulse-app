@@ -144,7 +144,7 @@ Fires at 6 PM CT daily (`0 18 * * *`).
 
 ```
 Schedule Trigger (6 PM CT)
-  → Code - Config (targetDate = yesterday CT, credentials)
+  → Code - Config (targetDate = today CT, credentials)
   → HTTP - Load Login Page (GET /portal/login — primes CakePHP session cookie)
   → HTTP - Portal Login (POST form, neverError, no redirect follow)
   → Code - Extract Cookie (merge GET+POST cookies, validate /portal/home redirect)
@@ -183,9 +183,8 @@ Credentials are already filled in `Code - Config`. Before activating, revert
 the hardcoded test date to dynamic:
 
 ```javascript
-const yesterday = new Date();
-yesterday.setDate(yesterday.getDate() - 1);
-const targetDate = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Chicago' }).format(yesterday);
+const today = new Date();
+const targetDate = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Chicago' }).format(today);
 ```
 
 | Field | Status |
