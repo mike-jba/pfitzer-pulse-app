@@ -325,6 +325,51 @@ a performance report. Results → `call_quality_audits` + `call_quality_scores`.
 **Critical separation:** The Voxa framework and its 24 criteria belong ONLY in the
 Chunk 12 prompt. Do NOT include CSR performance scoring in the Tier 1 nightly prompt.
 
+## Brand Profile — Pfitzer Pest Control
+
+Local pest control company serving South Dakota and Wyoming. Family- and pet-safe treatments,
+strong customer relationships, reliable ongoing service.
+Brand keywords: trustworthy, family-safe, local, professional, responsive.
+
+### Colors
+
+| Name | Hex | Role |
+|------|-----|------|
+| Brand Orange | `#f26522` | Primary CTAs, highlights, active accents, primary buttons |
+| Brand Blue | `#233E7F` | Headers, navigation/sidebar, secondary buttons, dark backgrounds |
+| White | `#ffffff` | Backgrounds, text on dark |
+| Light Gray | `#f5f5f5` | Section backgrounds, borders, cards |
+
+### Typography
+
+| Use | Font | CSS stack |
+|-----|------|-----------|
+| Headings | Montserrat (bold/semi-bold) | `"Montserrat", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif` |
+| Body | Open Sans | `"Open Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif` |
+
+### Buttons & Links
+
+- **Primary button**: Orange background (`#f26522`), white text
+- **Secondary button**: Blue background (`#233E7F`), white text
+- **Links**: Blue text (`#233E7F`), underline on hover
+
+### oklch Equivalents (for globals.css)
+
+| Color | oklch |
+|-------|-------|
+| Brand Orange `#f26522` | `oklch(0.65 0.19 43)` |
+| Brand Blue `#233E7F` | `oklch(0.31 0.13 262)` |
+| Light Gray `#f5f5f5` | `oklch(0.96 0 0)` |
+
+### Application in the Dashboard
+
+- `--primary` = Brand Orange (primary buttons, active highlights, CTAs)
+- `--secondary` = Brand Blue (secondary buttons)
+- Sidebar background = Brand Blue (dark blue sidebar, white text)
+- `--sidebar-primary` = slightly lighter blue for active nav items
+- Heading font = Montserrat (loaded via `next/font/google`)
+- Body font = Open Sans (loaded via `next/font/google`)
+
 ## Security Rules
 
 1. `SUPABASE_SERVICE_ROLE_KEY` — server-side only, never in client code

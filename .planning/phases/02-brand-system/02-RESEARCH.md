@@ -4,6 +4,17 @@
 **Domain:** Tailwind CSS v4 / shadcn/ui theming, Next.js 16 App Router, brand tokens, spacing audit
 **Confidence:** HIGH (all findings from direct codebase inspection)
 
+> **⚠ BRAND CORRECTION (2026-06-03):** The brand direction section below proposed a
+> forest-green palette and Geist font. These are WRONG. The official Pfitzer Pest Control
+> brand is:
+> - **Primary (CTAs/buttons):** Brand Orange `#f26522` → `oklch(0.65 0.19 43)`
+> - **Navigation/sidebar:** Brand Blue `#233E7F` → `oklch(0.31 0.13 262)`
+> - **Heading font:** Montserrat (loaded via next/font/google)
+> - **Body font:** Open Sans (loaded via next/font/google)
+> - Geist is removed entirely. The green palette is not used.
+> See CLAUDE.md "Brand Profile — Pfitzer Pest Control" for the authoritative reference.
+> The Tailwind v4 patterns, spacing audit, and codebase findings below remain accurate.
+
 ## Summary
 
 The codebase uses Tailwind CSS v4 (no tailwind.config.ts — v4 configures entirely through
