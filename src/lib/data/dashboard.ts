@@ -43,6 +43,7 @@ export type RecentCall = {
   complaint_flag: boolean | null;
   sales_opportunity_flag: boolean | null;
   direction: string | null;
+  processing_status: string | null;
 };
 
 export type DashboardData = {
@@ -98,7 +99,7 @@ export async function getDashboardData(): Promise<DashboardData> {
     supabase
       .from("calls")
       .select(
-        "id, call_time_ct, from_name, from_number, agent_name_inferred, duration_seconds, primary_category, sentiment, follow_up_required, complaint_flag, sales_opportunity_flag, direction"
+        "id, call_time_ct, from_name, from_number, agent_name_inferred, duration_seconds, primary_category, sentiment, follow_up_required, complaint_flag, sales_opportunity_flag, direction, processing_status"
       )
       .gt("duration_seconds", MIN_CALL_DURATION_SECONDS)
       .order("call_time_ct", { ascending: false })
