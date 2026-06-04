@@ -30,7 +30,7 @@ export function AppSidebar() {
       {/* Logo */}
       <div className="flex h-16 items-center border-b border-sidebar-border px-4">
         <Image
-          src="/Primary-logo.png"
+          src="/Pfitzer_blue_logo.png"
           alt="Pfitzer Pest Control"
           width={160}
           height={44}
