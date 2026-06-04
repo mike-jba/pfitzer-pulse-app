@@ -9,7 +9,7 @@ import {
   FileText,
   ClipboardCheck,
   Settings,
-  Bug,
+  Shield,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -30,7 +30,7 @@ export function AppSidebar() {
       {/* Logo */}
       <div className="flex h-16 items-center gap-2.5 border-b border-sidebar-border px-5">
         <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
-          <Bug className="h-4 w-4 text-primary-foreground" />
+          <Shield className="h-4 w-4 text-primary-foreground" />
         </div>
         <div className="flex flex-col leading-none">
           <span className="text-sm font-semibold text-sidebar-foreground">
