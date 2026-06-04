@@ -9,14 +9,14 @@ See: .planning/PROJECT.md (updated 2026-06-03)
 
 ## Current Position
 
-Phase: 2 of 5 (Brand System) — complete
-Plan: 02 of 02 in phase complete
-Status: Phase complete — ready for Phase 3
-Last activity: 2026-06-03 — Completed 02-02-PLAN.md (Spacing Pass and Visual Consistency)
+Phase: 3 of 5 (Dashboard & Recaps Polish) — in progress
+Plan: 02 of N in phase complete
+Status: In progress — 03-02 complete, 03-01 pending (has checkpoint)
+Last activity: 2026-06-04 — Completed 03-02-PLAN.md (Dashboard Pending Badges)
 
-Progress: [██████░░░░] ~30%
+Progress: [███████░░░] ~35%
 
-Phases: 2/5 complete | Plans: 6 complete (01-research + 01-02 security + 01-01 data fix + 01-03 filtering + 02-01 brand tokens + 02-02 spacing pass)
+Phases: 2/5 complete | Plans: 7 complete (01-research + 01-02 security + 01-01 data fix + 01-03 filtering + 02-01 brand tokens + 02-02 spacing pass + 03-02 pending badges)
 
 ## Performance Metrics
 
@@ -37,6 +37,10 @@ Phases: 2/5 complete | Plans: 6 complete (01-research + 01-02 security + 01-01 d
 ## Accumulated Context
 
 ### Key Decisions This Milestone
+
+- **DASH-05-01 (03-02):** recent-calls-table.tsx created in 03-02 (not 03-01) because 03-01 has a checkpoint and runs in a separate session; 03-01 will extend this file with Sheet/click logic.
+- **DASH-05-02 (03-02):** isPending = processing_status !== 'complete' gates amber PendingBadge in Agent and Category cells; Sentiment and Flags cells left as-is (they already degrade to dash).
+
 
 - **BRAND-01 (02-01):** Shield icon used as sidebar logo fallback (no logo.png found in public/). Orange bg-primary box on dark navy sidebar.
 - **BRAND-02 (02-01):** @theme --font-heading was self-referential (var(--font-sans)) — fixed to var(--font-heading) so Montserrat resolves correctly via next/font injection.
@@ -74,6 +78,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-06-03T00:00:00Z
-Stopped at: Completed 02-02-PLAN.md. Full brand system (tokens + spacing) verified by human. Phase 2 complete. Ready for Phase 3.
+Last session: 2026-06-04T13:56:00Z
+Stopped at: Completed 03-02-PLAN.md. Pending badges for agent/category on incomplete calls. Ready for 03-01 (slide-out panel — has checkpoint).
 Resume file: None
