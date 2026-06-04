@@ -1,12 +1,19 @@
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
+import { Montserrat, Open_Sans } from "next/font/google";
 import "./globals.css";
 import { AppSidebar } from "@/components/layout/app-sidebar";
 import { Header } from "@/components/layout/header";
 
-const geist = Geist({
-  variable: "--font-geist-sans",
+const montserrat = Montserrat({
+  variable: "--font-heading",
   subsets: ["latin"],
+  weight: ["400", "600", "700"],
+});
+
+const openSans = Open_Sans({
+  variable: "--font-sans",
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
 });
 
 export const metadata: Metadata = {
@@ -20,7 +27,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${geist.variable} h-full antialiased`}>
+    <html lang="en" className={`${montserrat.variable} ${openSans.variable} h-full antialiased`}>
       <body className="flex h-full">
         <AppSidebar />
         <div className="flex flex-1 flex-col overflow-hidden">
