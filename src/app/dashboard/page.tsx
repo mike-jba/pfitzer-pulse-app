@@ -21,7 +21,9 @@ function fmt(seconds: number) {
 
 function fmtTime(iso: string | null) {
   if (!iso) return "—";
-  return new Date(iso).toLocaleTimeString("en-US", {
+  return new Date(iso).toLocaleString("en-US", {
+    month: "short",
+    day: "numeric",
     hour: "numeric",
     minute: "2-digit",
     hour12: true,
@@ -126,7 +128,7 @@ export default async function DashboardPage() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b bg-muted/30 text-xs text-muted-foreground">
-                <th className="px-4 py-2 text-left font-medium">Time</th>
+                <th className="px-4 py-2 text-left font-medium">Date / Time (CT)</th>
                 <th className="px-4 py-2 text-left font-medium">Caller</th>
                 <th className="px-4 py-2 text-left font-medium">Agent</th>
                 <th className="px-4 py-2 text-left font-medium">Duration</th>

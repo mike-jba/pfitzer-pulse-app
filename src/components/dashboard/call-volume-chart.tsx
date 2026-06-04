@@ -26,24 +26,33 @@ export function CallVolumeChart({ data }: CallVolumeChartProps) {
       </CardHeader>
       <CardContent>
         <ResponsiveContainer width="100%" height={220}>
-          <BarChart data={data} margin={{ top: 4, right: 4, left: -20, bottom: 0 }}>
-            <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
+          <BarChart data={data} margin={{ top: 4, right: 8, left: -16, bottom: 0 }}>
+            <CartesianGrid strokeDasharray="3 3" stroke="hsl(0 0% 90%)" />
             <XAxis
               dataKey="date"
-              tick={{ fontSize: 12 }}
-              className="fill-muted-foreground"
+              tick={{ fontSize: 11, fill: "#6b7280" }}
+              tickLine={false}
+              axisLine={false}
             />
-            <YAxis tick={{ fontSize: 12 }} className="fill-muted-foreground" />
+            <YAxis
+              tick={{ fontSize: 11, fill: "#6b7280" }}
+              tickLine={false}
+              axisLine={false}
+              allowDecimals={false}
+            />
             <Tooltip
+              wrapperStyle={{ zIndex: 50 }}
               contentStyle={{
                 fontSize: 12,
                 borderRadius: 6,
-                border: "1px solid hsl(var(--border))",
-                background: "hsl(var(--card))",
-                color: "hsl(var(--card-foreground))",
+                border: "1px solid #e5e7eb",
+                background: "#ffffff",
+                color: "#111827",
+                boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)",
               }}
+              cursor={{ fill: "rgba(242, 101, 34, 0.08)" }}
             />
-            <Bar dataKey="calls" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
+            <Bar dataKey="calls" fill="#f26522" radius={[4, 4, 0, 0]} />
           </BarChart>
         </ResponsiveContainer>
       </CardContent>

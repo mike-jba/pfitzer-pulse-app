@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
 import {
   LayoutDashboard,
   Phone,
@@ -9,7 +10,6 @@ import {
   FileText,
   ClipboardCheck,
   Settings,
-  Shield,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -28,18 +28,14 @@ export function AppSidebar() {
   return (
     <aside className="flex h-screen w-60 flex-col border-r border-sidebar-border bg-sidebar">
       {/* Logo */}
-      <div className="flex h-16 items-center gap-2.5 border-b border-sidebar-border px-5">
-        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
-          <Shield className="h-4 w-4 text-primary-foreground" />
-        </div>
-        <div className="flex flex-col leading-none">
-          <span className="text-sm font-semibold text-sidebar-foreground">
-            Pfitzer Pulse
-          </span>
-          <span className="text-[10px] text-sidebar-foreground/50 uppercase tracking-widest">
-            Call Intelligence
-          </span>
-        </div>
+      <div className="flex h-16 items-center border-b border-sidebar-border px-4">
+        <Image
+          src="/Primary-logo.png"
+          alt="Pfitzer Pest Control"
+          width={160}
+          height={44}
+          className="h-11 w-auto max-w-[168px] object-contain"
+        />
       </div>
 
       {/* Navigation */}
