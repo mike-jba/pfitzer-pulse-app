@@ -32,7 +32,7 @@ export default async function AuditDetailPage({
     .sort((a, b) => a.score_pct - b.score_pct)[0]
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-4">
       <Link
         href="/audits"
         className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"

@@ -149,7 +149,7 @@ export default async function CallDetailPage({
   const { analysis } = call;
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-4">
       {/* Back link */}
       <Link
         href="/calls"
