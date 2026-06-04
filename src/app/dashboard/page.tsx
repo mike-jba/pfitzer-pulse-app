@@ -126,13 +126,13 @@ export default async function DashboardPage() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b bg-muted/30 text-xs text-muted-foreground">
-                <th className="px-4 py-3 text-left font-medium">Time</th>
-                <th className="px-4 py-3 text-left font-medium">Caller</th>
-                <th className="px-4 py-3 text-left font-medium">Agent</th>
-                <th className="px-4 py-3 text-left font-medium">Duration</th>
-                <th className="px-4 py-3 text-left font-medium">Category</th>
-                <th className="px-4 py-3 text-left font-medium">Sentiment</th>
-                <th className="px-4 py-3 text-left font-medium">Flags</th>
+                <th className="px-4 py-2 text-left font-medium">Time</th>
+                <th className="px-4 py-2 text-left font-medium">Caller</th>
+                <th className="px-4 py-2 text-left font-medium">Agent</th>
+                <th className="px-4 py-2 text-left font-medium">Duration</th>
+                <th className="px-4 py-2 text-left font-medium">Category</th>
+                <th className="px-4 py-2 text-left font-medium">Sentiment</th>
+                <th className="px-4 py-2 text-left font-medium">Flags</th>
               </tr>
             </thead>
             <tbody>
@@ -153,10 +153,10 @@ export default async function DashboardPage() {
                       i % 2 === 1 ? "bg-muted/10" : ""
                     }`}
                   >
-                    <td className="whitespace-nowrap px-4 py-3 text-muted-foreground">
+                    <td className="whitespace-nowrap px-4 py-2 text-muted-foreground">
                       {fmtTime(call.call_time_ct)}
                     </td>
-                    <td className="px-4 py-3">
+                    <td className="px-4 py-2">
                       <div className="font-medium">
                         {call.from_name ?? "Unknown"}
                       </div>
@@ -164,15 +164,15 @@ export default async function DashboardPage() {
                         {call.from_number ?? "—"}
                       </div>
                     </td>
-                    <td className="whitespace-nowrap px-4 py-3">
+                    <td className="whitespace-nowrap px-4 py-2">
                       {call.agent_name_inferred ?? "—"}
                     </td>
-                    <td className="whitespace-nowrap px-4 py-3 text-muted-foreground">
+                    <td className="whitespace-nowrap px-4 py-2 text-muted-foreground">
                       {call.duration_seconds != null
                         ? fmt(call.duration_seconds)
                         : "—"}
                     </td>
-                    <td className="px-4 py-3">
+                    <td className="px-4 py-2">
                       {call.primary_category ? (
                         <Badge variant="secondary" className="text-xs">
                           {call.primary_category}
@@ -181,7 +181,7 @@ export default async function DashboardPage() {
                         <span className="text-muted-foreground text-xs">—</span>
                       )}
                     </td>
-                    <td className="px-4 py-3">
+                    <td className="px-4 py-2">
                       {call.sentiment ? (
                         <span
                           className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${
@@ -195,7 +195,7 @@ export default async function DashboardPage() {
                         <span className="text-muted-foreground text-xs">—</span>
                       )}
                     </td>
-                    <td className="px-4 py-3">
+                    <td className="px-4 py-2">
                       <div className="flex gap-1 flex-wrap">
                         {call.complaint_flag && (
                           <span className="rounded-full bg-red-100 px-1.5 py-0.5 text-[10px] font-medium text-red-600">
