@@ -40,7 +40,7 @@ export default async function DashboardPage() {
   const { kpis, callVolume, categories, recentCalls } = await getDashboardData();
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {/* KPI Row */}
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7">
         <KpiCard

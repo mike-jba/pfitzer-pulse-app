@@ -3,7 +3,7 @@ import { TrendingUp } from "lucide-react";
 
 export default function TrendsPage() {
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-sm font-semibold">

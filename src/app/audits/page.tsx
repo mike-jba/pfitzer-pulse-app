@@ -43,7 +43,7 @@ export default async function AuditsPage() {
   const [audits, agents] = await Promise.all([getAuditsList(), getActiveAgents()])
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-xl font-semibold">Call Quality Audits</h1>
