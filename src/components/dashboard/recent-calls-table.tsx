@@ -55,6 +55,16 @@ const sentimentColors: Record<string, string> = {
   unknown: "bg-gray-100 text-gray-400",
 };
 
+// ── Pending badge ────────────────────────────────────────────────
+
+function PendingBadge() {
+  return (
+    <span className="inline-flex rounded-full bg-amber-100 px-2 py-0.5 text-[11px] font-medium text-amber-700">
+      Pending
+    </span>
+  );
+}
+
 // ── Component ───────────────────────────────────────────────────
 
 export function RecentCallsTable({ calls }: { calls: RecentCall[] }) {
@@ -115,7 +125,9 @@ export function RecentCallsTable({ calls }: { calls: RecentCall[] }) {
                   </td>
                 </tr>
               ) : (
-                calls.map((call, i) => (
+                calls.map((call, i) => {
+                  const isPending = call.processing_status !== "complete";
+                  return (
                   <tr
                     key={call.id}
                     onClick={() => handleRowClick(call.id)}
@@ -135,7 +147,7 @@ export function RecentCallsTable({ calls }: { calls: RecentCall[] }) {
                       </div>
                     </td>
                     <td className="whitespace-nowrap px-3 py-1.5">
-                      {call.agent_name_inferred ?? "—"}
+                      {isPending ? <PendingBadge /> : (call.agent_name_inferred ?? "—")}
                     </td>
                     <td className="whitespace-nowrap px-3 py-1.5 text-muted-foreground">
                       {call.duration_seconds != null
@@ -143,7 +155,9 @@ export function RecentCallsTable({ calls }: { calls: RecentCall[] }) {
                         : "—"}
                     </td>
                     <td className="px-3 py-1.5">
-                      {call.primary_category ? (
+                      {isPending ? (
+                        <PendingBadge />
+                      ) : call.primary_category ? (
                         <Badge variant="secondary" className="text-xs">
                           {call.primary_category}
                         </Badge>
@@ -185,7 +199,8 @@ export function RecentCallsTable({ calls }: { calls: RecentCall[] }) {
                       </div>
                     </td>
                   </tr>
-                ))
+                  );
+                })
               )}
             </tbody>
           </table>
