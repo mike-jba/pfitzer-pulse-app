@@ -9,14 +9,14 @@ See: .planning/PROJECT.md (updated 2026-06-03)
 
 ## Current Position
 
-Phase: 1 of 5 complete (Foundation & Security) — ready for Phase 2
-Plan: 03 of 03 in phase (all complete)
-Status: Phase 1 complete
-Last activity: 2026-06-03 — Completed 01-03-PLAN.md (DASH-06 + DASH-07 noise filtering)
+Phase: 2 of 5 (Brand System) — in progress
+Plan: 01 of 02 in phase complete
+Status: In progress
+Last activity: 2026-06-04 — Completed 02-01-PLAN.md (Brand Tokens, Fonts, and Logo)
 
-Progress: [████░░░░░░] ~20%
+Progress: [█████░░░░░] ~25%
 
-Phases: 1/5 complete | Plans: 4 complete (01-research + 01-02 security + 01-01 data fix + 01-03 filtering)
+Phases: 1/5 complete | Plans: 5 complete (01-research + 01-02 security + 01-01 data fix + 01-03 filtering + 02-01 brand tokens)
 
 ## Performance Metrics
 
@@ -30,6 +30,7 @@ Phases: 1/5 complete | Plans: 4 complete (01-research + 01-02 security + 01-01 d
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 01-foundation-and-security | 3/3 complete | ~12 min | ~4 min |
+| 02-brand-system | 1/2 complete | ~3 min | ~3 min |
 
 *Updated after each plan completion*
 
@@ -37,6 +38,9 @@ Phases: 1/5 complete | Plans: 4 complete (01-research + 01-02 security + 01-01 d
 
 ### Key Decisions This Milestone
 
+- **BRAND-01 (02-01):** Shield icon used as sidebar logo fallback (no logo.png found in public/). Orange bg-primary box on dark navy sidebar.
+- **BRAND-02 (02-01):** @theme --font-heading was self-referential (var(--font-sans)) — fixed to var(--font-heading) so Montserrat resolves correctly via next/font injection.
+- **BRAND-03 (02-01):** Sidebar active state uses sidebar-accent (brand-blue-hover) — correct lighter blue tint against dark navy background.
 - Auth deferred to v3 — dashboard URL not shared publicly
 - Prompt/scoring editor in Settings deferred to v3
 - DASH-06/DASH-07 placed in Phase 1 (data quality affects all views, not just dashboard)
@@ -65,6 +69,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-06-03T23:31:31Z
-Stopped at: Completed 01-03-PLAN.md. Phase 1 fully complete. Ready for Phase 2.
+Last session: 2026-06-04T00:33:59Z
+Stopped at: Completed 02-01-PLAN.md. Brand tokens, fonts, logo applied. Ready for 02-02.
 Resume file: None
