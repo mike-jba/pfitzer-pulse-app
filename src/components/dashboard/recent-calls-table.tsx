@@ -209,7 +209,7 @@ export function RecentCallsTable({ calls }: { calls: RecentCall[] }) {
 
       {/* Slide-out detail panel */}
       <Sheet open={selectedId !== null} onOpenChange={handleSheetOpenChange}>
-        <SheetContent side="right" className="sm:max-w-2xl overflow-y-auto">
+        <SheetContent side="right" className="data-[side=right]:sm:max-w-4xl overflow-y-auto">
           <SheetHeader>
             <SheetTitle>
               {loading
