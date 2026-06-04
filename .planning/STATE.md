@@ -5,7 +5,7 @@
 See: .planning/PROJECT.md (updated 2026-06-03)
 
 **Core value:** Karen and Garret can understand what's happening on every call without listening to recordings
-**Current focus:** Phase 2 — next phase (Phase 1 complete)
+**Current focus:** Phase 3 — next phase (Phase 2 complete)
 
 ## Current Position
 
@@ -56,6 +56,7 @@ Phases: 2/5 complete | Plans: 6 complete (01-research + 01-02 security + 01-01 d
 
 - DB types are stubs (110+ cast sites) — not in v2 scope but raises refactor risk
 - Agent-to-call linkage is fuzzy AI name match — audit accuracy risk, not addressed in v2
+- **n8n timestamp bug (known):** The nightly ingestion workflow adds 5 hours to call timestamps instead of treating portal IDs as UTC. All 168 existing records corrected in DB (2026-06-03). Fix the n8n `Code - Config` node before next ingestion run — the portal `term_id` timestamp IS in UTC; do not apply a CT→UTC offset.
 
 ### Resolved Concerns
 
@@ -63,6 +64,9 @@ Phases: 2/5 complete | Plans: 6 complete (01-research + 01-02 security + 01-01 d
 - ~~`/api/audit/run` and `/api/audit/call-count` have no auth guards~~ — Resolved in 01-02: routes deleted, logic moved to server actions
 - ~~DASH-06: Short call noise in all views~~ — Resolved in 01-03: MIN_CALL_DURATION_SECONDS = 25 applied to getCalls() and all 5 getDashboardData() sub-queries
 - ~~DASH-07: No Digit robocalls in all views~~ — Resolved in 01-03: Covered by duration proxy (no release_cause column exists); deferred true field to v3
+- ~~DASH-01: Chart tooltip z-index~~ — Resolved during Phase 2 verification: wrapperStyle zIndex:50 on both Recharts Tooltip components
+- ~~DASH-02: Recent Calls shows time-only~~ — Resolved during Phase 2 verification: fmtTime updated to show date + time in CT; column renamed "Date / Time (CT)"
+- ~~call_time_ct timestamps 5h ahead~~ — Resolved during Phase 2 verification: DB corrected (-5h on all 168 rows); root cause is n8n adding CDT offset to already-UTC portal timestamps (see Active Concerns)
 
 ### Pending Todos
 

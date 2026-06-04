@@ -8,14 +8,14 @@
 
 ### BRAND — Visual Design System
 
-- [ ] **BRAND-01**: App applies new brand fonts, colors, and logo throughout all pages
-- [ ] **BRAND-02**: Excessive spacing is fixed across all pages — tighter, more professional layout
-- [ ] **BRAND-03**: Consistent visual language across all tabs (sidebar, header, cards, tables)
+- [x] **BRAND-01**: App applies new brand fonts, colors, and logo throughout all pages
+- [x] **BRAND-02**: Excessive spacing is fixed across all pages — tighter, more professional layout
+- [x] **BRAND-03**: Consistent visual language across all tabs (sidebar, header, cards, tables)
 
 ### DASH — Dashboard Fixes
 
-- [ ] **DASH-01**: Chart tooltip z-index bug is fixed (tooltip text no longer renders behind chart bars)
-- [ ] **DASH-02**: Recent Calls list shows full date + time (not time only)
+- [x] **DASH-01**: Chart tooltip z-index bug is fixed (tooltip text no longer renders behind chart bars)
+- [x] **DASH-02**: Recent Calls list shows full date + time (not time only)
 - [ ] **DASH-03**: Recent Calls rows are clickable and navigate to the call detail page
 - [ ] **DASH-04**: Recent Calls layout is tightened — wasted whitespace removed
 - [ ] **DASH-05**: Agent and Category fields display correctly in Recent Calls for all fully-processed calls
@@ -92,11 +92,11 @@
 | SEC-02 | Phase 1 | ✓ Complete |
 | DASH-06 | Phase 1 | ✓ Complete |
 | DASH-07 | Phase 1 | ✓ Complete |
-| BRAND-01 | Phase 2 | Pending |
-| BRAND-02 | Phase 2 | Pending |
-| BRAND-03 | Phase 2 | Pending |
-| DASH-01 | Phase 3 | Pending |
-| DASH-02 | Phase 3 | Pending |
+| BRAND-01 | Phase 2 | ✓ Complete |
+| BRAND-02 | Phase 2 | ✓ Complete |
+| BRAND-03 | Phase 2 | ✓ Complete |
+| DASH-01 | Phase 2 (early) | ✓ Complete |
+| DASH-02 | Phase 2 (early) | ✓ Complete |
 | DASH-03 | Phase 3 | Pending |
 | DASH-04 | Phase 3 | Pending |
 | DASH-05 | Phase 3 | Pending |
@@ -118,4 +118,4 @@
 
 ---
 *Requirements defined: 2026-06-03*
-*Last updated: 2026-06-03 — Phase 1 complete; 5/22 requirements marked Complete*
+*Last updated: 2026-06-03 — Phase 2 complete; 10/22 requirements marked Complete (DASH-01, DASH-02 fixed early during Phase 2 verification)*

@@ -45,11 +45,11 @@ Plans:
 3. Excessive whitespace is removed — pages feel dense and professional, not padded
 4. All tabs share a consistent visual language: same card styles, same table styles, same sidebar treatment
 
-**Plans**: 2 plans (2 waves)
+**Plans**: 2 plans (2 waves) — ✓ Complete 2026-06-03
 
 Plans:
-- [ ] 02-01-PLAN.md — Brand tokens, font fix, and logo (BRAND-01) (wave 1)
-- [ ] 02-02-PLAN.md — Spacing pass and visual consistency (BRAND-02, BRAND-03) (wave 2)
+- [x] 02-01-PLAN.md — Brand tokens, font fix, and logo (BRAND-01) (wave 1)
+- [x] 02-02-PLAN.md — Spacing pass and visual consistency (BRAND-02, BRAND-03) (wave 2)
 
 ---
 
@@ -121,7 +121,7 @@ Plans:
 | Phase | Requirements | Plans Complete | Status | Completed |
 |-------|-------------|----------------|--------|-----------|
 | 1. Foundation & Security | DATA-01, SEC-01, SEC-02, DASH-06, DASH-07 | 3/3 | ✓ Complete | 2026-06-03 |
-| 2. Brand System | BRAND-01, BRAND-02, BRAND-03 | 0/2 | Not started | - |
+| 2. Brand System | BRAND-01, BRAND-02, BRAND-03 | 2/2 | ✓ Complete | 2026-06-03 |
 | 3. Dashboard & Recaps Polish | DASH-01–05, RECAP-01, RECAP-02 | 0/3 | Not started | - |
 | 4. Trends Tab | TRENDS-01–04 | 0/2 | Not started | - |
 | 5. Audit Polish & Settings | AUDIT-01, AUDIT-02, SETTINGS-01, SETTINGS-02 | 0/2 | Not started | - |
