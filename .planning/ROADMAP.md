@@ -15,8 +15,8 @@
 **Plans**: 3 plans
 
 Plans:
-- [ ] 03-01-PLAN.md — Recent Calls slide-out detail panel + tightened row density (DASH-03, DASH-04)
-- [ ] 03-02-PLAN.md — Agent/Category display with Pending badges in Recent Calls (DASH-05)
-- [ ] 03-03-PLAN.md — Improved n8n recap prompt + restructured recap page UI (RECAP-01, RECAP-02)
+- [x] 03-01-PLAN.md — Recent Calls slide-out detail panel + tightened row density (DASH-03, DASH-04)
+- [x] 03-02-PLAN.md — Agent/Category display with Pending badges in Recent Calls (DASH-05)
+- [x] 03-03-PLAN.md — Improved n8n recap prompt + restructured recap page UI (RECAP-01, RECAP-02)
 
 ---

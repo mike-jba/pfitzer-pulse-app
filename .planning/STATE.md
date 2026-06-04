@@ -5,18 +5,18 @@
 See: .planning/PROJECT.md (updated 2026-06-03)
 
 **Core value:** Karen and Garret can understand what's happening on every call without listening to recordings
-**Current focus:** Phase 3 — next phase (Phase 2 complete)
+**Current focus:** Phase 4 — next phase (Phase 3 complete)
 
 ## Current Position
 
-Phase: 3 of 5 (Dashboard & Recaps Polish) — in progress
-Plan: 01, 03 in phase — both paused at human-verify checkpoints
-Status: In progress — 03-01 Tasks 1+2 complete; 03-03 Tasks 2+3 complete; both awaiting human-verify
-Last activity: 2026-06-04 — Completed 03-01 Tasks 1+2 (click-to-detail slide-out panel + row density)
+Phase: 3 of 5 (Dashboard & Recaps Polish) — complete
+Plan: All 3 plans complete
+Status: Complete — all Phase 3 requirements verified and delivered
+Last activity: 2026-06-04 — Phase 3 complete (recap email branded + polished, clickable dashboard panel, pending badges)
 
-Progress: [███████░░░] ~38%
+Progress: [██████░░░░] ~60%
 
-Phases: 2/5 complete | Plans: 8 complete (01-research + 01-02 security + 01-01 data fix + 01-03 filtering + 02-01 brand tokens + 02-02 spacing pass + 03-02 pending badges + 03-03 partial)
+Phases: 3/5 complete | Plans: 11 complete (01-research + 01-02 security + 01-01 data fix + 01-03 filtering + 02-01 brand tokens + 02-02 spacing pass + 03-01 slide-out + 03-02 pending badges + 03-03 recaps UI + recap email polish)
 
 ## Performance Metrics
 
@@ -84,6 +84,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-06-04T13:56:52Z
-Stopped at: 03-01 Tasks 1+2 complete. Paused at Task 3 (human-verify of dashboard click-to-detail). Also still paused at 03-03 Task 4 (human-verify of /recaps page).
+Last session: 2026-06-04
+Stopped at: Phase 3 complete. Recap email verified working end-to-end (branded, structured summary, clickable KPI tiles, dynamic date restored). Ready for Phase 4 (Trends tab).
 Resume file: None

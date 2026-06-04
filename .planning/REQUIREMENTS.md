@@ -16,9 +16,9 @@
 
 - [x] **DASH-01**: Chart tooltip z-index bug is fixed (tooltip text no longer renders behind chart bars)
 - [x] **DASH-02**: Recent Calls list shows full date + time (not time only)
-- [ ] **DASH-03**: Recent Calls rows are clickable and navigate to the call detail page
-- [ ] **DASH-04**: Recent Calls layout is tightened — wasted whitespace removed
-- [ ] **DASH-05**: Agent and Category fields display correctly in Recent Calls for all fully-processed calls
+- [x] **DASH-03**: Recent Calls rows are clickable and navigate to the call detail page
+- [x] **DASH-04**: Recent Calls layout is tightened — wasted whitespace removed
+- [x] **DASH-05**: Agent and Category fields display correctly in Recent Calls for all fully-processed calls
 - [x] **DASH-06**: Calls shorter than ~25 seconds are excluded from all dashboard views globally
 - [x] **DASH-07**: Calls with Release Cause = "No Digit" are excluded from all views globally
 
@@ -31,8 +31,8 @@
 
 ### RECAP — Recaps Tab
 
-- [ ] **RECAP-01**: Claude summary prompt is improved to suppress generic/geographic observations irrelevant to a regional pest control company
-- [ ] **RECAP-02**: Recap display UI is improved for layout and readability
+- [x] **RECAP-01**: Claude summary prompt is improved to suppress generic/geographic observations irrelevant to a regional pest control company
+- [x] **RECAP-02**: Recap display UI is improved for layout and readability
 
 ### AUDIT — Audits Tab
 
@@ -97,11 +97,11 @@
 | BRAND-03 | Phase 2 | ✓ Complete |
 | DASH-01 | Phase 2 (early) | ✓ Complete |
 | DASH-02 | Phase 2 (early) | ✓ Complete |
-| DASH-03 | Phase 3 | Pending |
-| DASH-04 | Phase 3 | Pending |
-| DASH-05 | Phase 3 | Pending |
-| RECAP-01 | Phase 3 | Pending |
-| RECAP-02 | Phase 3 | Pending |
+| DASH-03 | Phase 3 | ✓ Complete |
+| DASH-04 | Phase 3 | ✓ Complete |
+| DASH-05 | Phase 3 | ✓ Complete |
+| RECAP-01 | Phase 3 | ✓ Complete |
+| RECAP-02 | Phase 3 | ✓ Complete |
 | TRENDS-01 | Phase 4 | Pending |
 | TRENDS-02 | Phase 4 | Pending |
 | TRENDS-03 | Phase 4 | Pending |

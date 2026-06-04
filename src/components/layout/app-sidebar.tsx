@@ -32,8 +32,9 @@ export function AppSidebar() {
         <Image
           src="/Pfitzer_blue_logo.png"
           alt="Pfitzer Pest Control"
-          width={160}
-          height={44}
+          width={0}
+          height={0}
+          sizes="168px"
           className="h-11 w-auto max-w-[168px] object-contain"
         />
       </div>
