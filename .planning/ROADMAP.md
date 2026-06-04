@@ -45,11 +45,11 @@ Plans:
 3. Excessive whitespace is removed — pages feel dense and professional, not padded
 4. All tabs share a consistent visual language: same card styles, same table styles, same sidebar treatment
 
-**Plans**: TBD
+**Plans**: 2 plans (2 waves)
 
 Plans:
-- [ ] 02-01: Define and apply brand tokens (colors, fonts, logo) across layout and global styles (BRAND-01)
-- [ ] 02-02: Tighten spacing and enforce visual consistency across all pages (BRAND-02, BRAND-03)
+- [ ] 02-01-PLAN.md — Brand tokens, font fix, and logo (BRAND-01) (wave 1)
+- [ ] 02-02-PLAN.md — Spacing pass and visual consistency (BRAND-02, BRAND-03) (wave 2)
 
 ---
 
