@@ -10,9 +10,9 @@ See: .planning/PROJECT.md (updated 2026-06-03)
 ## Current Position
 
 Phase: 3 of 5 (Dashboard & Recaps Polish) — in progress
-Plan: 03 of N in phase — paused at Task 4 checkpoint (human-verify)
-Status: In progress — 03-03 Tasks 2+3 complete; awaiting human-verify of /recaps page
-Last activity: 2026-06-04 — Executing 03-03-PLAN.md (Recap Page Restructure + n8n Prompt)
+Plan: 01, 03 in phase — both paused at human-verify checkpoints
+Status: In progress — 03-01 Tasks 1+2 complete; 03-03 Tasks 2+3 complete; both awaiting human-verify
+Last activity: 2026-06-04 — Completed 03-01 Tasks 1+2 (click-to-detail slide-out panel + row density)
 
 Progress: [███████░░░] ~38%
 
@@ -42,6 +42,8 @@ Phases: 2/5 complete | Plans: 8 complete (01-research + 01-02 security + 01-01 d
 - **RECAP-02-B (03-03):** Collapsed row summary uses structured data (total_calls + calls_by_category max key), not truncated narrative — avoids misleading partial text.
 - **RECAP-02-C (03-03):** Stats card on featured recap shows Total Calls, Top Category, Bookings (Scheduling+Rescheduling sum), Cancellations — derived inline from calls_by_category (no dedicated bookings_count column in DB).
 - **RECAP-01 (03-03):** n8n prompt rewrite spec documented for user; awaiting manual application in n8n UI (n8n-mcp writes broken on 2.23.2).
+- **DASH-03/04 (03-01):** parseTranscript inlined in RecentCallsTable client component — source is server-only; type import compiles away but runtime import fails across the boundary. Pure string parser, safe to duplicate.
+- **DASH-03/04 (03-01):** Sheet panel shows CallDetailContent only (no back link, status chips, AuditCallButton, Processing Events) — panel is for quick inspection; full detail stays at /calls/[id].
 - **DASH-05-01 (03-02):** recent-calls-table.tsx created in 03-02 (not 03-01) because 03-01 has a checkpoint and runs in a separate session; 03-01 will extend this file with Sheet/click logic.
 - **DASH-05-02 (03-02):** isPending = processing_status !== 'complete' gates amber PendingBadge in Agent and Category cells; Sentiment and Flags cells left as-is (they already degrade to dash).
 
@@ -82,6 +84,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-06-04T13:53:47Z
-Stopped at: 03-03 Tasks 2+3 complete and committed. Paused at Task 4 (human-verify of /recaps page). Task 1 instructions documented for user (n8n prompt rewrite — manual step).
+Last session: 2026-06-04T13:56:52Z
+Stopped at: 03-01 Tasks 1+2 complete. Paused at Task 3 (human-verify of dashboard click-to-detail). Also still paused at 03-03 Task 4 (human-verify of /recaps page).
 Resume file: None
