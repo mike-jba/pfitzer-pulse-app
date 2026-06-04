@@ -10,13 +10,13 @@ See: .planning/PROJECT.md (updated 2026-06-03)
 ## Current Position
 
 Phase: 3 of 5 (Dashboard & Recaps Polish) — in progress
-Plan: 02 of N in phase complete
-Status: In progress — 03-02 complete, 03-01 pending (has checkpoint)
-Last activity: 2026-06-04 — Completed 03-02-PLAN.md (Dashboard Pending Badges)
+Plan: 03 of N in phase — paused at Task 4 checkpoint (human-verify)
+Status: In progress — 03-03 Tasks 2+3 complete; awaiting human-verify of /recaps page
+Last activity: 2026-06-04 — Executing 03-03-PLAN.md (Recap Page Restructure + n8n Prompt)
 
-Progress: [███████░░░] ~35%
+Progress: [███████░░░] ~38%
 
-Phases: 2/5 complete | Plans: 7 complete (01-research + 01-02 security + 01-01 data fix + 01-03 filtering + 02-01 brand tokens + 02-02 spacing pass + 03-02 pending badges)
+Phases: 2/5 complete | Plans: 8 complete (01-research + 01-02 security + 01-01 data fix + 01-03 filtering + 02-01 brand tokens + 02-02 spacing pass + 03-02 pending badges + 03-03 partial)
 
 ## Performance Metrics
 
@@ -38,6 +38,10 @@ Phases: 2/5 complete | Plans: 7 complete (01-research + 01-02 security + 01-01 d
 
 ### Key Decisions This Milestone
 
+- **RECAP-02-A (03-03):** RecapCard and Stat moved from page.tsx into recap-history.tsx (client component owns rendering; server page imports). Avoids 'use client' on page.tsx which would expose service role key.
+- **RECAP-02-B (03-03):** Collapsed row summary uses structured data (total_calls + calls_by_category max key), not truncated narrative — avoids misleading partial text.
+- **RECAP-02-C (03-03):** Stats card on featured recap shows Total Calls, Top Category, Bookings (Scheduling+Rescheduling sum), Cancellations — derived inline from calls_by_category (no dedicated bookings_count column in DB).
+- **RECAP-01 (03-03):** n8n prompt rewrite spec documented for user; awaiting manual application in n8n UI (n8n-mcp writes broken on 2.23.2).
 - **DASH-05-01 (03-02):** recent-calls-table.tsx created in 03-02 (not 03-01) because 03-01 has a checkpoint and runs in a separate session; 03-01 will extend this file with Sheet/click logic.
 - **DASH-05-02 (03-02):** isPending = processing_status !== 'complete' gates amber PendingBadge in Agent and Category cells; Sentiment and Flags cells left as-is (they already degrade to dash).
 
@@ -78,6 +82,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-06-04T13:56:00Z
-Stopped at: Completed 03-02-PLAN.md. Pending badges for agent/category on incomplete calls. Ready for 03-01 (slide-out panel — has checkpoint).
+Last session: 2026-06-04T13:53:47Z
+Stopped at: 03-03 Tasks 2+3 complete and committed. Paused at Task 4 (human-verify of /recaps page). Task 1 instructions documented for user (n8n prompt rewrite — manual step).
 Resume file: None
